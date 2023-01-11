@@ -6,11 +6,7 @@ const db = require("../routes/db");
 router
   .get('/:uw_value', async(req, res, next) =>{
     const collection = db.get().db("TrackerQC").collection('panels');
-    query = "issues.missing_straw." + req.params.uw_value;
-    console.log(query);
-    const result = await collection.find({ 
-      query: {  $exists: true }
-    })
+    const result = await collection.find({ 'issues.missing_straws' : { $size : parseInt(req.params.uw_value)}})
       .toArray();
 
     if (result) {
