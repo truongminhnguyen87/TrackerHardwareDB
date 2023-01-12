@@ -96,11 +96,12 @@ showButton.addEventListener('click', async function () {
 	y: all_sparking_wires
     };
     var data = [missings, high_currents, blockeds, sparkings];
-    var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0};
-    var yaxis = {title : {text : 'status'}};
+    var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2};
+    var yaxis = {title : {text : 'no. of issues'}};
     var layout = { title : {text: this_title + " Straw/Wire Status"},
 		   xaxis : xaxis,
 		   yaxis : yaxis,
+		   barmode : 'stack',
 //		   margin: {t:0},
 		   scroolZoom : true };
     Plotly.newPlot(straw_status_plot, data, layout);
