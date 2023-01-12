@@ -35,8 +35,9 @@ async function getGreater(uw_value) {
 const showButton = document.getElementById('btnShowAllFields');
 showButton.addEventListener('click', async function () {
 
-    var this_title = "Panel "+parseInt(document.getElementById('panel_number').value);
-    panel_info = await getPanel(parseInt(document.getElementById('panel_number').value));
+    panel_number = parseInt(document.getElementById('panel_number').value);
+    var this_title = "Panel "+panel_number;
+    panel_info = await getPanel(panel_number);
     document.getElementById("log").innerHTML = JSON.stringify(panel_info,
 	undefined,
 	2);
@@ -105,6 +106,23 @@ showButton.addEventListener('click', async function () {
 //		   margin: {t:0},
 		   scroolZoom : true };
     Plotly.newPlot(straw_status_plot, data, layout);
+
+    total = missing_straws.length + high_current_wires.length + blocked_straws.length + sparking_wires.length;
+    output = "Panel "+panel_number+" has "+total+" bad channels: ("
+    if (missing_straws.length > 0) {
+	output += missing_straws.length + " missing straw(s), ";
+    }
+    if (high_current_wires.length > 0) {
+	output += high_current_wires.length + " high current wire(s), ";
+    }
+    if (blocked_straws.length > 0) {
+	output += blocked_straws.length + " blocked straw(s), ";
+    }
+    if (sparking_wires.length > 0) {
+	output += sparking_wires.length + " sparking wire(s), ";
+    }
+    output += ")";
+    document.getElementById("panel_info").innerHTML = output;
 });
 
 async function getPanel(panelNumber) {
