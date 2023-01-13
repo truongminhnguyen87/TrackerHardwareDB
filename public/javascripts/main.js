@@ -70,6 +70,11 @@ showButton.addEventListener('click', async function () {
     for (let i = 0; i < sparking_wires.length; i++) {
 	all_sparking_wires[sparking_wires[i]] = 1;
     }
+    all_short_wires = Array(96).fill(0)
+    short_wires = issues['short_wire']
+    for (let i = 0; i < short_wires.length; i++) {
+	all_short_wires[short_wires[i]] = 1;
+    }
     
     straw_status_plot = document.getElementById('straw_status_plot');
     var missings = {
@@ -96,7 +101,13 @@ showButton.addEventListener('click', async function () {
 	x: wire_numbers,
 	y: all_sparking_wires
     };
-    var data = [missings, high_currents, blockeds, sparkings];
+    var shorts = {
+	name : 'short wires',
+	type : 'bar',
+	x: wire_numbers,
+	y: all_short_wires
+    };
+    var data = [missings, high_currents, blockeds, sparkings, shorts];
     var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2};
     var yaxis = {title : {text : 'no. of issues'}};
     var layout = { title : {text: this_title + " Straw/Wire Status"},
