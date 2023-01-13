@@ -1,7 +1,7 @@
 const submitButton = document.getElementById('btnSubmit');
 const form = document.querySelector("form");
 const log = document.querySelector("#log");
-
+const all_issues = ["missing_straws", "high_current_wires", "blocked_straws", "sparking_wires", "short_wire" ] // the rest to be added
 
 submitButton.addEventListener('click', async function () {
   console.log("Submitted ...")
@@ -12,18 +12,20 @@ submitButton.addEventListener('click', async function () {
   // }
     //   log.innerText = output;
     let uw_value = parseInt(document.getElementById('uw_value').value);
-    greater_info = await getGreater(uw_value);
+    var greater_info = await getGreater(uw_value);
     document.getElementById("log").innerHTML = JSON.stringify(
 	greater_info,
 	undefined,
 	2);
 
-    panels = Array(greater_info.length)
+    var panels = Array(greater_info.length)
     for (let i = 0; i < greater_info.length; i++) {
 	panels[i] = greater_info[i].id;
     }
-    console.log(uw_value);
     document.getElementById("panel_info").innerHTML = "Panels with "+uw_value+" missing straws: "+panels;
+
+//    let selected = document.getElementById("issues").value
+//    console.log(selected)
 });
 
 async function getGreater(uw_value) {
@@ -35,79 +37,39 @@ async function getGreater(uw_value) {
 const showButton = document.getElementById('btnShowAllFields');
 showButton.addEventListener('click', async function () {
 
-    panel_number = parseInt(document.getElementById('panel_number').value);
+    var panel_number = parseInt(document.getElementById('panel_number').value);
     var this_title = "Panel "+panel_number;
-    panel_info = await getPanel(panel_number);
+    var panel_info = await getPanel(panel_number);
     document.getElementById("log").innerHTML = JSON.stringify(panel_info,
 	undefined,
 	2);
 
-    issues = panel_info[0]['issues']
+    var this_panel_issues = panel_info[0]['issues']
 
-    all_wires = Array(96).fill(0)
-    wire_numbers = Array(96).fill(0)
+    var all_wires = Array(96).fill(0)
+    var wire_numbers = Array(96).fill(0)
     for (let i = 0; i < all_wires.length; i++) {
 	wire_numbers[i] = i+1;
     }
 
-    all_missing_straws = Array(96).fill(0)
-    missing_straws = issues['missing_straws']
-    for (let i = 0; i < missing_straws.length; i++) {
-	all_missing_straws[missing_straws[i]] = 1;
-    }
-    all_high_current_wires = Array(96).fill(0)
-    high_current_wires = issues['high_current_wires']
-    for (let i = 0; i < high_current_wires.length; i++) {
-	all_high_current_wires[high_current_wires[i]] = 1;
-    }
-    all_blocked_straws = Array(96).fill(0)
-    blocked_straws = issues['blocked_straws']
-    for (let i = 0; i < blocked_straws.length; i++) {
-	all_blocked_straws[blocked_straws[i]] = 1;
-    }
-    all_sparking_wires = Array(96).fill(0)
-    sparking_wires = issues['sparking_wires']
-    for (let i = 0; i < sparking_wires.length; i++) {
-	all_sparking_wires[sparking_wires[i]] = 1;
-    }
-    all_short_wires = Array(96).fill(0)
-    short_wires = issues['short_wire']
-    for (let i = 0; i < short_wires.length; i++) {
-	all_short_wires[short_wires[i]] = 1;
+    var data = Array(all_issues.length)
+    for (let i = 0; i < data.length; i++) {
+	var the_issue = all_issues[i];
+	var this_panel_straws = Array(96).fill(0)
+	var this_panel_issue = this_panel_issues[the_issue];
+	for (let i = 0; i < this_panel_issue.length; i++) {
+	    this_panel_straws[this_panel_issue[i]] = 1;
+	}
+	var this_data = {
+	    name : the_issue,
+	    type : 'bar',
+	    x: wire_numbers,
+	    y: this_panel_straws
+	};
+	data[i] = this_data
     }
     
     straw_status_plot = document.getElementById('straw_status_plot');
-    var missings = {
-	name : 'missing straws',
-	type : 'bar',
-	x: wire_numbers,
-	y: all_missing_straws
-    };
-    var high_currents = {
-	name : 'high current wires',
-	type : 'bar',
-	x: wire_numbers,
-	y: all_high_current_wires
-    };
-    var blockeds = {
-	name : 'blocked straws',
-	type : 'bar',
-	x: wire_numbers,
-	y: all_blocked_straws
-    };
-    var sparkings = {
-	name : 'sparking wires',
-	type : 'bar',
-	x: wire_numbers,
-	y: all_sparking_wires
-    };
-    var shorts = {
-	name : 'short wires',
-	type : 'bar',
-	x: wire_numbers,
-	y: all_short_wires
-    };
-    var data = [missings, high_currents, blockeds, sparkings, shorts];
     var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2};
     var yaxis = {title : {text : 'no. of issues'}};
     var layout = { title : {text: this_title + " Straw/Wire Status"},
@@ -118,22 +80,22 @@ showButton.addEventListener('click', async function () {
 		   scroolZoom : true };
     Plotly.newPlot(straw_status_plot, data, layout);
 
-    total = missing_straws.length + high_current_wires.length + blocked_straws.length + sparking_wires.length;
-    output = "Panel "+panel_number+" has "+total+" bad channels: ("
-    if (missing_straws.length > 0) {
-	output += missing_straws.length + " missing straw(s), ";
-    }
-    if (high_current_wires.length > 0) {
-	output += high_current_wires.length + " high current wire(s), ";
-    }
-    if (blocked_straws.length > 0) {
-	output += blocked_straws.length + " blocked straw(s), ";
-    }
-    if (sparking_wires.length > 0) {
-	output += sparking_wires.length + " sparking wire(s), ";
-    }
-    output += ")";
-    document.getElementById("panel_info").innerHTML = output;
+    // total = missing_straws.length + high_current_wires.length + blocked_straws.length + sparking_wires.length;
+    // output = "Panel "+panel_number+" has "+total+" bad channels: ("
+    // if (missing_straws.length > 0) {
+    // 	output += missing_straws.length + " missing straw(s), ";
+    // }
+    // if (high_current_wires.length > 0) {
+    // 	output += high_current_wires.length + " high current wire(s), ";
+    // }
+    // if (blocked_straws.length > 0) {
+    // 	output += blocked_straws.length + " blocked straw(s), ";
+    // }
+    // if (sparking_wires.length > 0) {
+    // 	output += sparking_wires.length + " sparking wire(s), ";
+    // }
+    // output += ")";
+    // document.getElementById("panel_info").innerHTML = output;
 });
 
 async function getPanel(panelNumber) {
