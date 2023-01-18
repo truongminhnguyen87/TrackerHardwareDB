@@ -10,28 +10,54 @@ submitButton.addEventListener('click', async function () {
   //   output = `${output}${entry[0]}=${entry[1]}\r`;
   // }
     //   log.innerText = output;
-    let uw_value = parseInt(document.getElementById('uw_value').value);
-    let uw_op = '';
-    if (document.getElementById('uw_op_greater').checked) {
-	uw_op = '>';
+    let n_checks = 1;
+    if (document.getElementById('uw_op_issue2_and').checked || document.getElementById('uw_op_issue2_or').checked) {
+	n_checks = 2;
     }
-    else if (document.getElementById('uw_op_lesser').checked) {
-	uw_op = '<';
+    if (document.getElementById('uw_op_issue3_and').checked || document.getElementById('uw_op_issue3_or').checked) {
+	n_checks = 3;
     }
-    else if (document.getElementById('uw_op_equal').checked) {
-	uw_op = '=';
-    }
-    else if (document.getElementById('uw_op_greaterequal').checked) {
-	uw_op = '>=';
-    }
-    else if (document.getElementById('uw_op_lesserequal').checked) {
-	uw_op = '<=';
-    }
+    let uw_values = Array(n_checks)
+    let uw_ops = Array(n_checks)
+    let uw_issues = Array(n_checks)
+    let uw_andors = Array(n_checks-1)
 
-    let issue = document.getElementById("issues").value
-    //console.log(issue)
+    for (let i_check = 1; i_check<=n_checks; ++i_check) {
+	let uw_value = parseInt(document.getElementById('uw_value_issue'+i_check.toString()).value);
+	let uw_op = '';
+	if (document.getElementById('uw_op_issue'+i_check.toString()+'_greater').checked) {
+	    uw_op = '>';
+	}
+	else if (document.getElementById('uw_op_issue'+i_check.toString()+'_lesser').checked) {
+	    uw_op = '<';
+	}
+	else if (document.getElementById('uw_op_issue'+i_check.toString()+'_equal').checked) {
+	    uw_op = '=';
+	}
+	else if (document.getElementById('uw_op_issue'+i_check.toString()+'_greaterequal').checked) {
+	    uw_op = '>=';
+	}
+	else if (document.getElementById('uw_op_issue'+i_check.toString()+'_lesserequal').checked) {
+	    uw_op = '<=';
+	}
 
-    var greater_info = await getGreater(uw_value, uw_op, issue);
+	let uw_issue = document.getElementById("issue"+i_check.toString()).value
+	uw_values[i_check-1] = uw_value;
+	uw_ops[i_check-1] = uw_op;
+	uw_issues[i_check-1] = uw_issue;
+
+	var uw_andor = '';
+	if (i_check > 1) {
+	    if (document.getElementById('uw_op_issue'+i_check.toString()+'_and').checked) {
+		uw_andor = 'and';
+	    }
+	    else if (document.getElementById('uw_op_issue'+i_check.toString()+'_or').checked) {
+		uw_andor = 'or';
+	    }
+	    uw_andors[i_check-2] = uw_andor;
+	}
+    }
+    var greater_info = await getGreater(uw_values, uw_ops, uw_issues, uw_andors);
     document.getElementById("log").innerHTML = JSON.stringify(
 	greater_info,
 	undefined,
@@ -41,11 +67,27 @@ submitButton.addEventListener('click', async function () {
     for (let i = 0; i < greater_info.length; i++) {
 	panels[i] = greater_info[i]['id'];
     }
-    document.getElementById("panel_info").innerHTML = panels.length + " panels with "+uw_op+uw_value+" "+issue+": "+panels;
+    var text = panels.length + " panels with ";
+    for (let i = 0; i < uw_values.length; ++i) {
+	if (i > 0) {
+	    text += " " + uw_andors[i-1] + " ";
+	}
+	text += uw_ops[i]+uw_values[i]+" "+uw_issues[i];
+    }
+    text += ":\n "+panels;
+    document.getElementById("panel_info").innerHTML = text;
 });
 
-async function getGreater(uw_value, uw_op, issue) {
-  const response = await fetch('http://localhost:3000/greater/' + uw_op + "-" + uw_value.toString() + "-" + issue);
+async function getGreater(uw_values, uw_ops, uw_issues, uw_andors) {
+    var url = 'http://localhost:3000/greater/';
+    for (let i_issue = 0; i_issue < uw_values.length; ++i_issue) {
+	if (i_issue > 0) {
+	    url += "/" + uw_andors[i_issue-1] + "/";
+	}
+	url += uw_ops[i_issue] + "/" + uw_values[i_issue].toString() + "/" + uw_issues[i_issue];
+    }
+    console.log(url)
+  const response = await fetch(url);
   const panelInfo = await response.json();
   return panelInfo;
 }

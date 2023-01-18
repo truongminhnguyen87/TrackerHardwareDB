@@ -5,42 +5,96 @@ block content
     br
     h1.text-primary= title
     .row
-      .col-4
-        | Panel number: 
+      .col-5
+        | Show all issues with panel number: 
         input#panel_number(type='number')
-      .col-1
       .col-2
-        button#btnShowAllFields.btn.btn-block.btn-info Show 
+        button#btnShowAllFields.btn.btn-block.btn-info Show Panel
     .row
-      //.col-1
-          //| Missing straws:
       .col-2
-        select#issues
+        | Find panel with:
+      .col-2
+        form
+          div
+          input#uw_op_issue1_greater(type='radio', name='unusable_wires_op', value='>')
+          label(for='uw_op_issue1_greater') >
+          input#uw_op_issue1_lesser(type='radio', name='unusable_wires_op', value='<')
+          label(for='uw_op_issue1_lesser') <
+          input#uw_op_issue1_equal(type='radio', name='unusable_wires_op', value='=')
+          label(for='uw_op_issue1_equal') =
+          input#uw_op_issue1_greaterequal(type='radio', name='unusable_wires_op', value='>=')
+          label(for='uw_op_issue1_greaterequal') >=
+          input#uw_op_issue1_lesserequal(type='radio', name='unusable_wires_op', value='<=')
+          label(for='uw_op_issue1_lesserequal') <=
+      .col-2
+        input#uw_value_issue1(type='number')
+      .col-2
+        select#issue1
           option(value='missing_straws') Missing Straws
           option(value='high_current_wires') High Current Wires
           option(value='blocked_straws') Blocked Straws
 
-      .col-1
-        form
-          div
-          input#uw_op_greater(type='radio', name='unusable_wires_op', value='>', checked='')
-          label(for='uw_op_greater') >
-          br
-          input#uw_op_lesser(type='radio', name='unusable_wires_op', value='<')
-          label(for='uw_op_lesser') <
-          br
-          input#uw_op_equal(type='radio', name='unusable_wires_op', value='=')
-          label(for='uw_op_equal') =
-          br
-          input#uw_op_greaterequal(type='radio', name='unusable_wires_op', value='>=')
-          label(for='uw_op_greaterequal') >=
-          br
-          input#uw_op_lesserequal(type='radio', name='unusable_wires_op', value='<=')
-          label(for='uw_op_lesserequal') <=
-      .col-3
-        input#uw_value(type='number')
       .col-2
-        button#btnSubmit.btn.btn-block.btn-info  Submit
+        button#btnSubmit.btn.btn-block.btn-info  Find Panels
+
+      .row
+        .col-2
+          form
+            div
+            input#uw_op_issue2_and(type='radio', name='unusable_wires_op', value='AND')
+            label(for='uw_op_issue2_and') AND
+            input#uw_op_issue2_or(type='radio', name='unusable_wires_op', value='OR')
+            label(for='uw_op_issue2_or') OR
+        .col-2
+          form
+            div
+            input#uw_op_issue2_greater(type='radio', name='unusable_wires_op', value='>')
+            label(for='uw_op_issue2_greater') >
+            input#uw_op_issue2_lesser(type='radio', name='unusable_wires_op', value='<')
+            label(for='uw_op_issue2_lesser') <
+            input#uw_op_issue2_equal(type='radio', name='unusable_wires_op', value='=')
+            label(for='uw_op_issue2_equal') =
+            input#uw_op_issue2_greaterequal(type='radio', name='unusable_wires_op', value='>=')
+            label(for='uw_op_issue2_greaterequal') >=
+            input#uw_op_issue2_lesserequal(type='radio', name='unusable_wires_op', value='<=')
+            label(for='uw_op_issue2_lesserequal') <=
+        .col-2
+          input#uw_value_issue2(type='number')
+        .col-2
+          select#issue2
+            option(value='missing_straws') Missing Straws
+            option(value='high_current_wires') High Current Wires
+            option(value='blocked_straws') Blocked Straws
+
+      .row
+        .col-2
+          form
+            div
+            input#uw_op_issue3_and(type='radio', name='unusable_wires_op', value='AND')
+            label(for='uw_op_issue3_and') AND
+            input#uw_op_issue3_or(type='radio', name='unusable_wires_op', value='OR')
+            label(for='uw_op_issue3_or') OR
+        .col-2
+          form
+            div
+            input#uw_op_issue3_greater(type='radio', name='unusable_wires_op', value='>')
+            label(for='uw_op_issue3_greater') >
+            input#uw_op_issue3_lesser(type='radio', name='unusable_wires_op', value='<')
+            label(for='uw_op_issue3_lesser') <
+            input#uw_op_issue3_equal(type='radio', name='unusable_wires_op', value='=')
+            label(for='uw_op_issue3_equal') =
+            input#uw_op_issue3_greaterequal(type='radio', name='unusable_wires_op', value='>=')
+            label(for='uw_op_issue3_greaterequal') >=
+            input#uw_op_issue3_lesserequal(type='radio', name='unusable_wires_op', value='<=')
+            label(for='uw_op_issue3_lesserequal') <=
+        .col-2
+          input#uw_value_issue3(type='number')
+        .col-2
+          select#issue3
+            option(value='missing_straws') Missing Straws
+            option(value='high_current_wires') High Current Wires
+            option(value='blocked_straws') Blocked Straws
+
     //.row
     .row
       | Output:
