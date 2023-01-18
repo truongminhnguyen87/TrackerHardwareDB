@@ -12,7 +12,19 @@ submitButton.addEventListener('click', async function () {
   // }
     //   log.innerText = output;
     let uw_value = parseInt(document.getElementById('uw_value').value);
-    var greater_info = await getGreater(uw_value);
+    let uw_op = '';
+    if (document.getElementById('uw_op1_greater').checked) {
+	uw_op = '>';
+    }
+    else if (document.getElementById('uw_op2_lesser').checked) {
+	uw_op = '<';
+    }
+    else if (document.getElementById('uw_op3_equal').checked) {
+	uw_op = '=';
+    }
+
+    console.log(uw_op)
+    var greater_info = await getGreater(uw_value, uw_op);
     document.getElementById("log").innerHTML = JSON.stringify(
 	greater_info,
 	undefined,
@@ -22,14 +34,14 @@ submitButton.addEventListener('click', async function () {
     for (let i = 0; i < greater_info.length; i++) {
 	panels[i] = greater_info[i]['id'];
     }
-    document.getElementById("panel_info").innerHTML = "Panels with "+uw_value+" missing straws: "+panels;
+    document.getElementById("panel_info").innerHTML = "Panels with "+uw_op+uw_value+" missing straws: "+panels;
 
 //    let selected = document.getElementById("issues").value
 //    console.log(selected)
 });
 
-async function getGreater(uw_value) {
-  const response = await fetch('http://localhost:3000/greater/' + uw_value.toString());
+async function getGreater(uw_value, uw_op) {
+  const response = await fetch('http://localhost:3000/greater/' + uw_op + "-" + uw_value.toString());
   const panelInfo = await response.json();
   return panelInfo;
 }
