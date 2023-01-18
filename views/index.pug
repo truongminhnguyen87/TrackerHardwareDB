@@ -17,14 +17,21 @@ block content
       .col-1
         form
           div
-          input#uw_op1_greater(type='radio', name='unusable_wires_op', value='>', checked='')
-          label(for='uw_op1_greater') >
+          input#uw_op_greater(type='radio', name='unusable_wires_op', value='>', checked='')
+          label(for='uw_op_greater') >
           br
-          input#uw_op2_lesser(type='radio', name='unusable_wires_op', value='<')
-          label(for='uw_op2_lesser') <
+          input#uw_op_lesser(type='radio', name='unusable_wires_op', value='<')
+          label(for='uw_op_lesser') <
           br
-          input#uw_op3_equal(type='radio', name='unusable_wires_op', value='=')
-          label(for='uw_op3_equal') =
+          input#uw_op_equal(type='radio', name='unusable_wires_op', value='=')
+          label(for='uw_op_equal') =
+          br
+          input#uw_op_greaterequal(type='radio', name='unusable_wires_op', value='>=')
+          label(for='uw_op_greaterequal') >=
+          br
+          input#uw_op_lesserequal(type='radio', name='unusable_wires_op', value='<=')
+          label(for='uw_op_lesserequal') <=
+
       .col-3
         input#uw_value(type='number')
       .col-2

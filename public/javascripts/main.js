@@ -4,7 +4,6 @@ const log = document.querySelector("#log");
 const all_issues = ["missing_straws", "high_current_wires", "blocked_straws" ] //, "sparking_wires" ] //, "short_wire" ] // the rest to be added
 
 submitButton.addEventListener('click', async function () {
-  console.log("Submitted ...")
   const data = new FormData(form);
   // let output = "";
   // for (const entry of data) {
@@ -13,17 +12,22 @@ submitButton.addEventListener('click', async function () {
     //   log.innerText = output;
     let uw_value = parseInt(document.getElementById('uw_value').value);
     let uw_op = '';
-    if (document.getElementById('uw_op1_greater').checked) {
+    if (document.getElementById('uw_op_greater').checked) {
 	uw_op = '>';
     }
-    else if (document.getElementById('uw_op2_lesser').checked) {
+    else if (document.getElementById('uw_op_lesser').checked) {
 	uw_op = '<';
     }
-    else if (document.getElementById('uw_op3_equal').checked) {
+    else if (document.getElementById('uw_op_equal').checked) {
 	uw_op = '=';
     }
+    else if (document.getElementById('uw_op_greaterequal').checked) {
+	uw_op = '>=';
+    }
+    else if (document.getElementById('uw_op_lesserequal').checked) {
+	uw_op = '<=';
+    }
 
-    console.log(uw_op)
     var greater_info = await getGreater(uw_value, uw_op);
     document.getElementById("log").innerHTML = JSON.stringify(
 	greater_info,
@@ -34,7 +38,7 @@ submitButton.addEventListener('click', async function () {
     for (let i = 0; i < greater_info.length; i++) {
 	panels[i] = greater_info[i]['id'];
     }
-    document.getElementById("panel_info").innerHTML = "Panels with "+uw_op+uw_value+" missing straws: "+panels;
+    document.getElementById("panel_info").innerHTML = panels.length + " panels with "+uw_op+uw_value+" missing straws: "+panels;
 
 //    let selected = document.getElementById("issues").value
 //    console.log(selected)
