@@ -12,8 +12,14 @@ block content
       .col-2
         button#btnShowAllFields.btn.btn-block.btn-info Show 
     .row
-      .col-1
-          | Missing straws: 
+      //.col-1
+          //| Missing straws:
+      .col-2
+        select#issues
+          option(value='missing_straws') Missing Straws
+          option(value='high_current_wires') High Current Wires
+          option(value='blocked_straws') Blocked Straws
+
       .col-1
         form
           div
@@ -31,16 +37,11 @@ block content
           br
           input#uw_op_lesserequal(type='radio', name='unusable_wires_op', value='<=')
           label(for='uw_op_lesserequal') <=
-
       .col-3
         input#uw_value(type='number')
       .col-2
         button#btnSubmit.btn.btn-block.btn-info  Submit
     //.row
-      //.col-3
-        //select#issues
-          //option(value='missing_straws') Missing Straws
-          //option(value='high_current_wires') High Current Wires
     .row
       | Output:
       .bg-muted.text-body.rounded
