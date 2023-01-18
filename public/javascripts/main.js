@@ -1,7 +1,7 @@
 const submitButton = document.getElementById('btnSubmit');
 const form = document.querySelector("form");
 const log = document.querySelector("#log");
-const all_issues = ["missing_straws", "high_current_wires", "blocked_straws", "sparking_wires", "short_wire" ] // the rest to be added
+const all_issues = ["missing_straws", "high_current_wires", "blocked_straws" ] //, "sparking_wires" ] //, "short_wire" ] // the rest to be added
 
 submitButton.addEventListener('click', async function () {
   console.log("Submitted ...")
@@ -20,7 +20,7 @@ submitButton.addEventListener('click', async function () {
 
     var panels = Array(greater_info.length)
     for (let i = 0; i < greater_info.length; i++) {
-	panels[i] = greater_info[i].id;
+	panels[i] = greater_info[i]['id'];
     }
     document.getElementById("panel_info").innerHTML = "Panels with "+uw_value+" missing straws: "+panels;
 
@@ -44,7 +44,7 @@ showButton.addEventListener('click', async function () {
 	undefined,
 	2);
 
-    var this_panel_issues = panel_info[0]['issues']
+    var this_panel_issues = panel_info[0]
 
     var all_wires = Array(96).fill(0)
     var wire_numbers = Array(96).fill(0)
@@ -53,13 +53,16 @@ showButton.addEventListener('click', async function () {
     }
 
     var data = Array(all_issues.length)
+    var total_issues = 0
     for (let i = 0; i < data.length; i++) {
 	var the_issue = all_issues[i];
 	var this_panel_straws = Array(96).fill(0)
+//	console.log(the_issue)
 	var this_panel_issue = this_panel_issues[the_issue];
 	for (let i = 0; i < this_panel_issue.length; i++) {
 	    this_panel_straws[this_panel_issue[i]] = 1;
 	}
+	total_issues = total_issues + this_panel_issue.length
 	var this_data = {
 	    name : the_issue,
 	    type : 'bar',
@@ -81,21 +84,17 @@ showButton.addEventListener('click', async function () {
     Plotly.newPlot(straw_status_plot, data, layout);
 
     // total = missing_straws.length + high_current_wires.length + blocked_straws.length + sparking_wires.length;
-    // output = "Panel "+panel_number+" has "+total+" bad channels: ("
-    // if (missing_straws.length > 0) {
-    // 	output += missing_straws.length + " missing straw(s), ";
-    // }
-    // if (high_current_wires.length > 0) {
-    // 	output += high_current_wires.length + " high current wire(s), ";
-    // }
-    // if (blocked_straws.length > 0) {
-    // 	output += blocked_straws.length + " blocked straw(s), ";
-    // }
-    // if (sparking_wires.length > 0) {
-    // 	output += sparking_wires.length + " sparking wire(s), ";
-    // }
-    // output += ")";
-    // document.getElementById("panel_info").innerHTML = output;
+    var output = "Panel "+panel_number+" has "+total_issues+" bad channels: ("
+    for (let i = 0; i < data.length; i++) {
+	var the_issue = all_issues[i];
+	var this_panel_straws = Array(96).fill(0)
+	var this_panel_issue = this_panel_issues[the_issue];
+	output += this_panel_issue.length + " " + the_issue;
+
+	if (i != data.length-1) { output += ", "; }
+	else { output += ")"; }
+    }
+    document.getElementById("panel_info").innerHTML = output;
 });
 
 async function getPanel(panelNumber) {

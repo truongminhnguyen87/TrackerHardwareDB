@@ -2,13 +2,19 @@ const express = require('express');
 const router = express.Router();
 const ObjectID = require("mongodb").ObjectID;
 const db = require("../routes/db");
+//const issues = require("../routes/issues");
+
+//console.log(issues.all_issues)
 
 router
   .get('/:id', async(req, res, next) =>{
-    const collection = db.get().db("TrackerQC").collection('panels');
-    const result = await collection.find({ id: req.params.id }).sort({$natural: -1}).toArray();
+//    const collection = db.get().db("TrackerQC").collection('panels');
+      //    const result = await collection.find({ id: req.params.id }).sort({$natural: -1}).toArray();
+      let query = 'SELECT * FROM panels WHERE id='+req.params.id+';'
+      console.log(query)
+      const result = await db.get().query(query)
     if (result) {
-      return res.send(result);
+      return res.send(result.rows);
     }
     res.code(500).send({ message: "Not found" });
   })
