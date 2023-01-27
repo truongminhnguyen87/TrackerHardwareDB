@@ -3,6 +3,42 @@ const form = document.querySelector("form");
 const log = document.querySelector("#log");
 const all_issues = ["missing_straws", "high_current_wires", "blocked_straws" ] //, "sparking_wires" ] //, "short_wire" ] // the rest to be added
 
+
+const response = await fetch('http://localhost:3000/all');
+const allPanelInfo = await response.json();
+
+var all_n_data = Array(all_issues.length)
+var panels = Array(allPanelInfo.length)
+for (let i_panel = 0; i_panel < panels.length; i_panel++) {
+    panels[i_panel] = allPanelInfo[i_panel]['id'];
+}
+for (let i_issue = 0; i_issue < all_issues.length; ++i_issue) {
+//let i_issue = 0;
+    var n_issue = Array(allPanelInfo.length);
+    var issue = all_issues[i_issue];
+    for (let i_panel = 0; i_panel < panels.length; i_panel++) {
+	n_issue[i_panel] = allPanelInfo[i_panel][issue].length;
+    }
+
+    // Define Data
+    all_n_data[i_issue] = {name : issue,
+			   x: panels,
+			   y: n_issue,
+			   mode:"markers",
+			   type:"scatter"
+			  }
+}
+
+issue_vs_panel_plot = document.getElementById('issue_vs_panel_plot');
+var xaxis = {title : {text : 'panel number'}, tickmode : "linear", tick0 : 0.0, dtick : 10.0, gridwidth : 2};
+var yaxis = {title : {text : 'no. of channels with issues'}};
+var layout = { title : {text: "All Issues vs Panel Number"},
+	       xaxis : xaxis,
+	       yaxis : yaxis,
+	       scroolZoom : true };
+Plotly.newPlot(issue_vs_panel_plot, all_n_data, layout);
+
+
 submitButton.addEventListener('click', async function () {
   const data = new FormData(form);
   // let output = "";
