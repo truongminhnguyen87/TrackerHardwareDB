@@ -33,6 +33,10 @@ block content
           option(value='missing_straws') Missing Straws
           option(value='high_current_wires') High Current Wires
           option(value='blocked_straws') Blocked Straws
+          option(value='any_issues') Any Issues
+          option(value='unusable_channels') Unusable Channels
+          option(value='semi_unusable_channels') Semi-unusable Channels
+
 
       .col-2
         button#btnSubmit.btn.btn-block.btn-info  Find Panels
@@ -99,7 +103,7 @@ block content
     .row
       | Output:
       .bg-muted.text-body.rounded
-        pre#panel_info
+        pre#panel_info(style="width:1300px;height:100px;")
     .row
       | Plots:
       div#straw_status_plot(style="width:1300px;height:400px;")
