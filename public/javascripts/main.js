@@ -1,7 +1,7 @@
 const submitButton = document.getElementById('btnSubmit');
 const form = document.querySelector("form");
 const log = document.querySelector("#log");
-const all_issues = ["missing_straws", "high_current_wires", "blocked_straws" ] //, "sparking_wires" ] //, "short_wire" ] // the rest to be added
+const all_issues = ["missing_straws", "high_current_wires", "blocked_straws", "short_wires" ] //, "sparking_wires" ] //, "short_wire" ] // the rest to be added
 
 
 const response = await fetch('http://localhost:3000/all');
