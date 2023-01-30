@@ -4,15 +4,23 @@ block content
   .container
     br
     h1.text-primary= title
+    h2 All Panels QC Summary
     .row
-      .col-5
-        | Show all issues with panel number: 
-        input#panel_number(type='number')
-      .col-2
-        button#btnShowAllFields.btn.btn-block.btn-info Show Panel
+       div#issue_vs_panel_plot(style="width:1300px;height:400px;")
+    h2 Single Panel QC Summary
+    .row
+       .col-5
+         | Show all issues with panel number: 
+         input#panel_number(type='number')
+       .col-2
+         button#btnShowAllFields.btn.btn-block.btn-info Show Panel
+    .row
+       | Output:
+       div#straw_status_plot(style="width:1300px;height:400px;")
+    h2 Find Panels
     .row
       .col-2
-        | Find panel with:
+        | Find panels with:
       .col-2
         form
           div
@@ -104,12 +112,8 @@ block content
       | Output:
       .bg-muted.text-body.rounded
         pre#panel_info(style="width:1300px;height:100px;")
+    h2 Verbose Output
     .row
-      | Plots:
-      div#straw_status_plot(style="width:1300px;height:400px;")
-      div#issue_vs_panel_plot(style="width:1300px;height:400px;")
-    .row
-        | Verbose Output:
         pre#log.
 
 
