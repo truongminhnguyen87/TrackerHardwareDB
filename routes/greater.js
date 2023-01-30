@@ -11,7 +11,7 @@ router
 
       // use 'cardinality' instead of 'array_length' because we want an empty array to return 0
       let uw_issue="";
-      if (req.params.uw_issue == "any_issues") {
+      if (req.params.uw_issue == "total_issues") {
 	  uw_issue = "array_cat(missing_straws, array_cat(blocked_straws, high_current_wires))";
       }
       else if (req.params.uw_issue == "unusable_channels") {
