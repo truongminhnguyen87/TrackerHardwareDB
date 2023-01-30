@@ -16,6 +16,8 @@ block content
          button#btnShowAllFields.btn.btn-block.btn-info Show Panel
     .row
        | Output:
+       .bg-muted.text-body.rounded
+       pre#panel_info(style="width:1300px;height:100px;")
        div#straw_status_plot(style="width:1300px;height:400px;")
     h2 Find Panels
     .row
@@ -111,7 +113,7 @@ block content
     .row
       | Output:
       .bg-muted.text-body.rounded
-        pre#panel_info(style="width:1300px;height:100px;")
+        pre#found_panel_info(style="width:1300px;height:100px;")
     h2 Verbose Output
     .row
         pre#log.

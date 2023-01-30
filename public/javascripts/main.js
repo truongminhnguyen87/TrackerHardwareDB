@@ -111,7 +111,7 @@ submitButton.addEventListener('click', async function () {
 	text += uw_ops[i]+uw_values[i]+" "+uw_issues[i];
     }
     text += ":\n "+panels;
-    document.getElementById("panel_info").innerHTML = text;
+    document.getElementById("found_panel_info").innerHTML = text;
 });
 
 async function getGreater(uw_values, uw_ops, uw_issues, uw_andors) {
