@@ -13,7 +13,7 @@ block content
          | Show all issues with panel number: 
          input#panel_number(type='number')
        .col-2
-         button#btnShowAllFields.btn.btn-block.btn-info Show Panel
+         button#btnShowPanel.btn.btn-block.btn-info Show Panel
     .row
        | Output:
        .bg-muted.text-body.rounded
@@ -26,15 +26,15 @@ block content
       .col-2
         form
           div
-          input#uw_op_issue1_greater(type='radio', name='unusable_wires_op', value='>')
+          input#uw_op_issue1_greater(type='radio', name='unusable_wires_op', value='gt')
           label(for='uw_op_issue1_greater') >
-          input#uw_op_issue1_lesser(type='radio', name='unusable_wires_op', value='<')
+          input#uw_op_issue1_lesser(type='radio', name='unusable_wires_op', value='lt')
           label(for='uw_op_issue1_lesser') <
-          input#uw_op_issue1_equal(type='radio', name='unusable_wires_op', value='=')
+          input#uw_op_issue1_equal(type='radio', name='unusable_wires_op', value='eq')
           label(for='uw_op_issue1_equal') =
-          input#uw_op_issue1_greaterequal(type='radio', name='unusable_wires_op', value='>=')
+          input#uw_op_issue1_greaterequal(type='radio', name='unusable_wires_op', value='ge')
           label(for='uw_op_issue1_greaterequal') >=
-          input#uw_op_issue1_lesserequal(type='radio', name='unusable_wires_op', value='<=')
+          input#uw_op_issue1_lesserequal(type='radio', name='unusable_wires_op', value='le')
           label(for='uw_op_issue1_lesserequal') <=
       .col-2
         input#uw_value_issue1(type='number')
@@ -49,7 +49,7 @@ block content
 
 
       .col-2
-        button#btnSubmit.btn.btn-block.btn-info  Find Panels
+        button#btnFindPanels.btn.btn-block.btn-info  Find Panels
 
       .row
         .col-2
@@ -57,8 +57,8 @@ block content
             div
             input#uw_op_issue2_and(type='radio', name='unusable_wires_op', value='AND')
             label(for='uw_op_issue2_and') AND
-            input#uw_op_issue2_or(type='radio', name='unusable_wires_op', value='OR')
-            label(for='uw_op_issue2_or') OR
+            //input#uw_op_issue2_or(type='radio', name='unusable_wires_op', value='OR')
+            //label(for='uw_op_issue2_or') OR
         .col-2
           form
             div
@@ -86,8 +86,8 @@ block content
             div
             input#uw_op_issue3_and(type='radio', name='unusable_wires_op', value='AND')
             label(for='uw_op_issue3_and') AND
-            input#uw_op_issue3_or(type='radio', name='unusable_wires_op', value='OR')
-            label(for='uw_op_issue3_or') OR
+            //input#uw_op_issue3_or(type='radio', name='unusable_wires_op', value='OR')
+            //label(for='uw_op_issue3_or') OR
         .col-2
           form
             div
@@ -122,5 +122,5 @@ block content
   
   script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', integrity='sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4', crossorigin='anonymous')
   script(src='https://cdn.plot.ly/plotly-2.16.1.min.js')
-  script(src='javascripts/main.js', type='module')
+  script(src='javascripts/main.js', type='module', crossorigin='anonymous')
   

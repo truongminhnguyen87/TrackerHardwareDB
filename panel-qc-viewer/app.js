@@ -22,9 +22,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/greater', require('./routes/greater'));
-app.use('/panel', require('./routes/panel'));
-app.use('/all', require('./routes/all'));
+app.use('/allPanels', require('./routes/allPanels'));
+app.use('/getPanel', require('./routes/getPanel'));
+app.use('/findPanels', require('./routes/findPanels'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

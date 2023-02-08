@@ -1,10 +1,5 @@
-A viewer for the panel database.
+# TrackerHardwareDB
 
-Requirements:
-- Node.js, version 19.2 is tested
+Various tools for interacting with the tracker hardware database
 
-Installation:
-- run `npm install`
-
-Run:
-- `npm start`
+ - panel-qc-viewer: 

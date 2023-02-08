@@ -1,37 +1,21 @@
-#!/usr/bin/env node
+const app = require('../app');
+const debug = require('debug')('panel-qc-viewer:server');
 
-/**
- * Module dependencies.
- */
+//Load HTTP module
+const http = require("http");
+const fetch = require('node-fetch');
 
-var app = require('../app');
-var debug = require('debug')('panel-qc-viewer:server');
-var http = require('http');
-
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || '3000');
+const hostname = "127.0.0.1";
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+//Create HTTP server and listen on port 3000 for requests
+const server = http.createServer(app);
 
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-const db = require("../routes/db");
-db.connect(()=>{
-  server.listen(port);
-  server.on('error', onError);
-  server.on('listening', onListening);
-});
-
-db.connectDb();
+//listen for request on port 3000, and as a callback function have the port listened on logged
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
