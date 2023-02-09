@@ -5,7 +5,7 @@ const all_issues = ["missing_straws", "high_current_wires", "blocked_straws", "s
 //
 // All Panels Plot
 //
-const response = await fetch('http://localhost:3000/allPanels');
+const response = await fetch('allPanels');
 const allPanelInfo = await response.json();
 //console.log(allPanelInfo);
 var all_n_data = Array(all_issues.length)
@@ -46,7 +46,7 @@ showPanelButton.addEventListener('click', async function () {
     var output = "";
     var panel_number = parseInt(document.getElementById('panel_number').value);
     if (!isNaN(panel_number)) {
-	const response = await fetch('http://localhost:3000/getPanel/'+panel_number);
+	const response = await fetch('getPanel/'+panel_number);
 	const panel_info = await response.json();
 
 	// Output the full return to the verbose output section
@@ -213,7 +213,7 @@ findPanelsButton.addEventListener('click', async function () {
 });
 
 async function findPanels(uw_values, uw_ops, uw_issues, uw_andors) {
-    var url = 'http://localhost:3000/findPanels/';
+    var url = 'findPanels/';
     for (let i_issue = 0; i_issue < uw_values.length; ++i_issue) {
 	if (i_issue > 0) {
 	    url += "/" + uw_andors[i_issue-1] + "/";
