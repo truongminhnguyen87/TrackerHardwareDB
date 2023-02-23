@@ -114,7 +114,7 @@ showPanelButton.addEventListener('click', async function () {
 		    histfunc : "sum",
 		    x: wire_numbers,
 		    y: this_panel_pairs,
-		    xbins : { start : 0, end : 96, size : 1}
+		    xbins : { start : -0.5, end : 96.5, size : 1}
 		};
 		data[i] = this_data
 	    }
@@ -141,7 +141,7 @@ showPanelButton.addEventListener('click', async function () {
 	    var max_erf_fits = this_panel_issues['max_erf_fit'];
 	    var pair_numbers = Array(48).fill(0)
 	    for (let i = 0; i < pair_numbers.length; i++) {
-		pair_numbers[i] = (2*i);
+		pair_numbers[i] = (2*i+0.5);
 	    }
 	    var max_erf_fit_data = {
 		    name : 'max_erf_fit',
