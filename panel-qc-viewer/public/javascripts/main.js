@@ -1,6 +1,7 @@
 const form = document.querySelector("form");
 const log = document.querySelector("#log");
-const all_issues = ["missing_straws", "high_current_wires", "blocked_straws", "short_wires", "sparking_wires" ] //, "short_wire" ] // the rest to be added
+const single_channel_issues = ["missing_straws", "high_current_wires", "blocked_straws", "short_wires", "sparking_wires", "missing_anode", "missing_cathode" ] // the rest to be added
+const pair_channel_issues = ["missing_omega_pieces", "loose_omega_pieces"]
 
 //
 // All Panels Plot
@@ -8,36 +9,67 @@ const all_issues = ["missing_straws", "high_current_wires", "blocked_straws", "s
 const response = await fetch('allPanels');
 const allPanelInfo = await response.json();
 //console.log(allPanelInfo);
-var all_n_data = Array(all_issues.length)
+var single_channel_n_data = Array(single_channel_issues.length)
 var panels = Array(allPanelInfo.length)
 for (let i_panel = 0; i_panel < panels.length; i_panel++) {
     panels[i_panel] = allPanelInfo[i_panel]['id'];
 }
-for (let i_issue = 0; i_issue < all_issues.length; ++i_issue) {
+for (let i_issue = 0; i_issue < single_channel_issues.length; ++i_issue) {
     var n_issue = Array(allPanelInfo.length);
-    var issue = all_issues[i_issue];
+    var issue = single_channel_issues[i_issue];
+//    console.log(issue)
     for (let i_panel = 0; i_panel < panels.length; i_panel++) {
-	n_issue[i_panel] = allPanelInfo[i_panel][issue].length;
+	if (allPanelInfo[i_panel][issue] != null) {
+	    n_issue[i_panel] = allPanelInfo[i_panel][issue].length;
+	}
     }
 
     // Define Data
-    all_n_data[i_issue] = {name : issue,
-			   x: panels,
-			   y: n_issue,
-			   mode:"markers",
-			   type:"scatter"
-			  }
+    single_channel_n_data[i_issue] = {name : issue,
+					  x: panels,
+					  y: n_issue,
+					  mode:"markers",
+					  type:"scatter"
+					 }
 }
-
-issue_vs_panel_plot = document.getElementById('issue_vs_panel_plot');
+var single_channel_issue_vs_panel_plot = document.getElementById('single_channel_issue_vs_panel_plot');
 var xaxis = {title : {text : 'panel number'}, tickmode : "linear", tick0 : 0.0, dtick : 10.0, gridwidth : 2};
-var yaxis = {title : {text : 'no. of channels with issues'}};
-var layout = { title : {text: "All Issues vs Panel Number"},
+var yaxis = {title : {text : 'no. of channels with single-channel issues'}};
+var layout = { title : {text: "All Single-Channel Issues vs Panel Number"},
 	       xaxis : xaxis,
 	       yaxis : yaxis,
 	       scroolZoom : true };
-Plotly.newPlot(issue_vs_panel_plot, all_n_data, layout);
+Plotly.newPlot(single_channel_issue_vs_panel_plot, single_channel_n_data, layout);
 
+// var pair_channel_n_data = Array(pair_channel_issues.length)
+// var panels = Array(allPanelInfo.length)
+// for (let i_panel = 0; i_panel < panels.length; i_panel++) {
+//     panels[i_panel] = allPanelInfo[i_panel]['id'];
+// }
+// for (let i_issue = 0; i_issue < pair_channel_issues.length; ++i_issue) {
+//     var n_issue = Array(allPanelInfo.length);
+//     var issue = pair_channel_issues[i_issue];
+//     for (let i_panel = 0; i_panel < panels.length; i_panel++) {
+// 	n_issue[i_panel] = allPanelInfo[i_panel][issue].length;
+// //	n_issue[i_panel] = 1;
+//     }
+
+//     // Define Data
+//     pair_channel_n_data[i_issue] = {name : issue,
+// 					  x: panels,
+// 					  y: n_issue,
+// 					  mode:"markers",
+// 					  type:"scatter"
+// 					 }
+// }
+// var pair_channel_issue_vs_panel_plot = document.getElementById('pair_channel_issue_vs_panel_plot');
+// var xaxis = {title : {text : 'panel number'}, tickmode : "linear", tick0 : 0.0, dtick : 10.0, gridwidth : 2};
+// var yaxis = {title : {text : 'no. of channels with pair-channel issues'}};
+// var layout = { title : {text: "All Pair-Channel Issues vs Panel Number"},
+// 	       xaxis : xaxis,
+// 	       yaxis : yaxis,
+// 	       scroolZoom : true };
+// Plotly.newPlot(pair_channel_issue_vs_panel_plot, pair_channel_n_data, layout);
 //
 // Show issues with specific panel
 //
@@ -65,46 +97,98 @@ showPanelButton.addEventListener('click', async function () {
 		wire_numbers[i] = i;
 	    }
 
-	    var data = Array(all_issues.length)
+	    var data = Array(single_channel_issues.length + pair_channel_issues.length + 1)
 	    var total_issues = 0
-	    for (let i = 0; i < data.length; i++) {
-		var the_issue = all_issues[i];
+
+	    for (let i = 0; i < pair_channel_issues.length; i++) {
+		var the_issue = pair_channel_issues[i];
+		var this_panel_pairs = Array(96).fill(0)
+		var this_panel_issue = this_panel_issues[the_issue];
+		for (let j = 0; j < this_panel_issue.length; j++) {
+		    this_panel_pairs[this_panel_issue[j]] = 1;
+		}
+//		total_issues = total_issues + this_panel_issue.length
+		var this_data = {
+		    name : the_issue + " (DEMO)",
+		    type : 'histogram',
+		    histfunc : "sum",
+		    x: wire_numbers,
+		    y: this_panel_pairs,
+		    xbins : { start : -0.5, end : 96.5, size : 1}
+		};
+		data[i] = this_data
+	    }
+
+	    for (let i = 0; i < single_channel_issues.length; i++) {
+		var the_issue = single_channel_issues[i];
 		var this_panel_straws = Array(96).fill(0)
 		var this_panel_issue = this_panel_issues[the_issue];
-		for (let i = 0; i < this_panel_issue.length; i++) {
-		    this_panel_straws[this_panel_issue[i]] = 1;
+		for (let j = 0; j < this_panel_issue.length; j++) {
+		    this_panel_straws[this_panel_issue[j]] = 1;
 		}
 		total_issues = total_issues + this_panel_issue.length
 		var this_data = {
 		    name : the_issue,
-		    type : 'bar',
+		    type : 'histogram',
+		    histfunc : "sum",
 		    x: wire_numbers,
-		    y: this_panel_straws
+		    y: this_panel_straws,
+		    xbins : { start : 0, end : 96, size : 1}
 		};
-		data[i] = this_data
+		data[pair_channel_issues.length + i] = this_data
 	    }
+
+	    var max_erf_fits = this_panel_issues['max_erf_fit'];
+	    var pair_numbers = Array(48).fill(0)
+	    for (let i = 0; i < pair_numbers.length; i++) {
+		pair_numbers[i] = (2*i+0.5);
+	    }
+	    var max_erf_fit_data = {
+		    name : 'max_erf_fit',
+		    type : 'scatter',
+		    x: pair_numbers,
+		    y: max_erf_fits,
+		yaxis : 'y2',
+		mode : 'lines+markers'
+	    };	    
+	    data[data.length-1] = max_erf_fit_data;
 	    
 	    straw_status_plot = document.getElementById('straw_status_plot');
-	    var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2};
+	    var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2, range : [0, 96]};
 	    var yaxis = {title : {text : 'no. of issues'}};
 	    var layout = { title : {text: this_title + " Straw/Wire Status"},
 			   xaxis : xaxis,
 			   yaxis : yaxis,
+			   yaxis2: {
+			       title: 'Max Erf Fit [nA]',
+			       overlaying: 'y',
+			       side: 'right'
+			   },
 			   barmode : 'stack',
+			   legend: {"orientation": "h"},
 			   //		   margin: {t:0},
 			   scroolZoom : true };
-	    Plotly.newPlot(straw_status_plot, data, layout);
-
+	    Plotly.newPlot(straw_status_plot, data, layout);	    
 	    // total = missing_straws.length + high_current_wires.length + blocked_straws.length + sparking_wires.length;
-	    output += " has "+total_issues+" bad channels: ("
-	    for (let i = 0; i < data.length; i++) {
-		var the_issue = all_issues[i];
-		var this_panel_straws = Array(96).fill(0)
+	    output += " has "+total_issues+" bad channels: \n"
+	    for (let i = 0; i < data.length-1; i++) {
+		var the_issue = "";
+		if (i < single_channel_issues.length) {
+		    if (i == 0) {
+			output += "\t single-channel issues: ";
+		    }
+		    the_issue = single_channel_issues[i];
+		}
+		else {
+		    if (i == single_channel_issues.length) {
+			output += "\n\t pair-channel issues: ";
+		    }
+		    the_issue = pair_channel_issues[i-single_channel_issues.length];
+		}
 		var this_panel_issue = this_panel_issues[the_issue];
 		output += this_panel_issue.length + " " + the_issue;
 		
 		if (i != data.length-1) { output += ", "; }
-		else { output += ")"; }
 	    }
 	}
 	else {
