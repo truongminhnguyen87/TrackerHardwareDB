@@ -3,18 +3,18 @@ showHVDataButton.addEventListener('click', async function () {
     var output = "";
     var panel_number = parseInt(document.getElementById('panel_number').value);
 
-    const n_pairs = 48;
+    const n_doublets = 48;
     if (!isNaN(panel_number)) {
 	var this_title = "Panel "+panel_number;
 
-	var all_current_data = Array(n_pairs);
-	for (let i_pair = 0; i_pair < n_pairs; ++i_pair) {
-	    var chan1_number = (2*i_pair).toString();
-	    var chan2_number = (2*i_pair+1).toString();
-	    var pair_number = i_pair.toString().padStart(2,'0');
-	    var axis_pair_number = (i_pair+1).toString().padStart(2,'0'); // axis names have to start counting at 1...
+	var all_current_data = Array(n_doublets);
+	for (let i_doublet = 0; i_doublet < n_doublets; ++i_doublet) {
+	    var chan1_number = (2*i_doublet).toString();
+	    var chan2_number = (2*i_doublet+1).toString();
+	    var doublet_number = i_doublet.toString().padStart(2,'0');
+	    var axis_doublet_number = (i_doublet+1).toString().padStart(2,'0'); // axis names have to start counting at 1...
 
-	    const hv_response = await fetch('getHVData/'+panel_number+'/'+pair_number);
+	    const hv_response = await fetch('getHVData/'+panel_number+'/'+doublet_number);
 	    const hv_data = await hv_response.json();
 
 	    var timestamps = hv_data.map(a => a.timestamp);
@@ -25,10 +25,10 @@ showHVDataButton.addEventListener('click', async function () {
 		x: timestamps,
 		y: currents,
 		mode : 'lines',
-		xaxis : 'x'+axis_pair_number,
-		yaxis : 'y'+axis_pair_number
+		xaxis : 'x'+axis_doublet_number,
+		yaxis : 'y'+axis_doublet_number
 	    };	    
-	    all_current_data[i_pair] = currents_data;
+	    all_current_data[i_doublet] = currents_data;
 	}
 
     
