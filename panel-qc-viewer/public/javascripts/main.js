@@ -97,7 +97,7 @@ showPanelButton.addEventListener('click', async function () {
 		wire_numbers[i] = i;
 	    }
 
-	    var data = Array(single_channel_issues.length + doublet_channel_issues.length + 1)
+	    var data = Array(single_channel_issues.length + doublet_channel_issues.length + 2) // +2 for max_erf_fit and rise_time
 	    var total_issues = 0
 
 	    for (let i = 0; i < doublet_channel_issues.length; i++) {
@@ -149,12 +149,28 @@ showPanelButton.addEventListener('click', async function () {
 		    x: doublet_numbers,
 		    y: max_erf_fits,
 		yaxis : 'y2',
-		mode : 'lines+markers'
+		mode : 'lines+markers',
+		marker : { color : 'red' },
+		line : { color : 'red' }
 	    };	    
-	    data[data.length-1] = max_erf_fit_data;
+	    data[data.length-2] = max_erf_fit_data;
+
+//	    var rise_times = this_panel_issues['rise_time'];
+	    var rise_times = Array(48).fill(10);
+	    var rise_time_data = {
+		    name : 'rise_time',
+		    type : 'scatter',
+		    x: doublet_numbers,
+		    y: rise_times,
+		yaxis : 'y3',
+		mode : 'lines+markers',
+		marker : { color : 'blue' },
+		line : { color : 'blue' }
+	    };	    
+	    data[data.length-1] = rise_time_data;
 	    
 	    straw_status_plot = document.getElementById('straw_status_plot');
-	    var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2, range : [0, 96]};
+	    var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2, range : [0, 96], domain : [0, 0.9]};
 	    var yaxis = {title : {text : 'no. of issues'}};
 	    var layout = { title : {text: this_title + " Straw/Wire Status"},
 			   xaxis : xaxis,
@@ -162,7 +178,17 @@ showPanelButton.addEventListener('click', async function () {
 			   yaxis2: {
 			       title: 'Max Erf Fit [nA]',
 			       overlaying: 'y',
-			       side: 'right'
+			       side: 'right',
+			       titlefont: {color: 'red'},
+			       tickfont: {color: 'red'}
+			   },
+			   yaxis3: {
+			       title: 'Rise Time [min]',
+			       overlaying: 'y',
+			       side: 'right',
+			       position : 0.95,
+			       titlefont: {color: 'blue'},
+			       tickfont: {color: 'blue'}
 			   },
 			   barmode : 'stack',
 			   legend: {"orientation": "h"},
@@ -171,7 +197,7 @@ showPanelButton.addEventListener('click', async function () {
 	    Plotly.newPlot(straw_status_plot, data, layout);	    
 	    // total = missing_straws.length + high_current_wires.length + blocked_straws.length + sparking_wires.length;
 	    output += " has "+total_issues+" bad channels: \n"
-	    for (let i = 0; i < data.length-1; i++) {
+	    for (let i = 0; i < data.length-2; i++) {
 		var the_issue = "";
 		if (i < single_channel_issues.length) {
 		    if (i == 0) {
