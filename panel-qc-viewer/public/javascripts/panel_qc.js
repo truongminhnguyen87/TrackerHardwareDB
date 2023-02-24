@@ -1,7 +1,7 @@
 const form = document.querySelector("form");
 const log = document.querySelector("#log");
-const single_channel_issues = ["missing_straws", "high_current_wires", "blocked_straws", "short_wires", "sparking_wires", "missing_anode", "missing_cathode" ] // the rest to be added
-const doublet_channel_issues = ["missing_omega_pieces", "loose_omega_pieces"]
+const single_channel_issues = ["missing_straws", "high_current_wires", "blocked_straws", "short_wires", "sparking_wires", "missing_anode" ] // the rest to be added
+const doublet_channel_issues = ["missing_omega_pieces" ] //, "loose_omega_pieces"]
 
 const showPanelButton = document.getElementById('btnShowPanel');
 showPanelButton.addEventListener('click', async function () {
@@ -35,11 +35,12 @@ showPanelButton.addEventListener('click', async function () {
 		var this_panel_doublets = Array(96).fill(0)
 		var this_panel_issue = this_panel_issues[the_issue];
 		for (let j = 0; j < this_panel_issue.length; j++) {
-		    this_panel_doublets[this_panel_issue[j]] = 1;
+		    this_panel_doublets[2*this_panel_issue[j]] = 1;
+		    this_panel_doublets[2*this_panel_issue[j]+1] = 1;
 		}
 //		total_issues = total_issues + this_panel_issue.length
 		var this_data = {
-		    name : the_issue + " (DEMO)",
+		    name : the_issue + "",
 		    type : 'histogram',
 		    histfunc : "sum",
 		    x: wire_numbers,
@@ -63,7 +64,7 @@ showPanelButton.addEventListener('click', async function () {
 		    histfunc : "sum",
 		    x: wire_numbers,
 		    y: this_panel_straws,
-		    xbins : { start : 0, end : 96, size : 1}
+		    xbins : { start : -0.5, end : 96.5, size : 1}
 		};
 		data[doublet_channel_issues.length + i] = this_data
 	    }
@@ -126,7 +127,7 @@ showPanelButton.addEventListener('click', async function () {
 			   scroolZoom : true };
 	    Plotly.newPlot(straw_status_plot, data, layout);	    
 	    // total = missing_straws.length + high_current_wires.length + blocked_straws.length + sparking_wires.length;
-	    output += " has "+total_issues+" bad channels: \n"
+	    output += " has "+total_issues+" issues: \n"
 	    for (let i = 0; i < data.length-2; i++) {
 		var the_issue = "";
 		if (i < single_channel_issues.length) {
