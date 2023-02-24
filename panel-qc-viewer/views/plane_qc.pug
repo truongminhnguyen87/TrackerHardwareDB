@@ -9,9 +9,17 @@ block content
          | Show panel QC data for all panels in plane number: 
          input#plane_number(type='number')
        .col-2
-         //button#btnShowHVData.btn.btn-block.btn-info Show HV Data
+         button#btnShowPlane.btn.btn-block.btn-info Show Plane
     .row
-         //div#hv_data_plot(style="width:1300px;height:1300px;")
+       | Output:
+       .bg-muted.text-body.rounded
+       pre#plane_info(style="width:1300px;height:100px;")
+       div#panel1_plot(style="width:1300px;height:600px;")
+       div#panel2_plot(style="width:1300px;height:600px;")
+       div#panel3_plot(style="width:1300px;height:600px;")
+       div#panel4_plot(style="width:1300px;height:600px;")
+       div#panel5_plot(style="width:1300px;height:600px;")
+       div#panel6_plot(style="width:1300px;height:600px;")
     h2 Verbose Output
     .row
         pre#log.
