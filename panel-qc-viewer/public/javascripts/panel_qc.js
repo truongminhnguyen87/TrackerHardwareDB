@@ -38,7 +38,7 @@ showPanelButton.addEventListener('click', async function () {
 		    this_panel_doublets[2*this_panel_issue[j]] = 1;
 		    this_panel_doublets[2*this_panel_issue[j]+1] = 1;
 		}
-//		total_issues = total_issues + this_panel_issue.length
+		total_issues = total_issues + this_panel_issue.length
 		var this_data = {
 		    name : the_issue + "",
 		    type : 'histogram',
@@ -101,7 +101,7 @@ showPanelButton.addEventListener('click', async function () {
 	    data[data.length-1] = rise_time_data;
 	    
 	    straw_status_plot = document.getElementById('straw_status_plot');
-	    var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2, range : [0, 96], domain : [0, 0.9]};
+	    var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2, range : [-0.5, 96.5], domain : [0, 0.9]};
 	    var yaxis = {title : {text : 'no. of issues'}};
 	    var layout = { title : {text: this_title + " Straw/Wire Status"},
 			   xaxis : xaxis,
