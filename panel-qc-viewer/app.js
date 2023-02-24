@@ -29,6 +29,10 @@ app.use('/findPanels', require('./routes/findPanels'));
 app.use('/hv_data', require('./routes/hv_data'));
 app.use('/getHVData', require('./routes/getHVData'));
 
+app.use('/panel_qc', require('./routes/panel_qc'));
+app.use('/all_panel_qc', require('./routes/all_panel_qc'));
+app.use('/plane_qc', require('./routes/plane_qc'));
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
