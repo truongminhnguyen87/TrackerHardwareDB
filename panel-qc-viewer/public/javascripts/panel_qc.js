@@ -3,12 +3,11 @@ import { single_channel_issues } from './single_channel_issues.js'
 const form = document.querySelector("form");
 const log = document.querySelector("#log");
 const single_ch_issues = single_channel_issues(); // the rest to be added
-const doublet_channel_issues = [ ] //"missing_omega_pieces" ] //, "loose_omega_pieces"]
 
 const showPanelButton = document.getElementById('btnShowPanel');
 showPanelButton.addEventListener('click', async function () {
     var output = "";
-    var panel_number = parseInt(document.getElementById('panel_number').value);
+    var panel_number = parseInt(document.getElementById('panel_number').value);    
     if (!isNaN(panel_number)) {
 	const response = await fetch('getPanel/'+panel_number);
 	const panel_info = await response.json();
@@ -29,28 +28,8 @@ showPanelButton.addEventListener('click', async function () {
 		wire_numbers[i] = i;
 	    }
 
-	    var data = Array(single_ch_issues.length + doublet_channel_issues.length + 2) // +2 for max_erf_fit and rise_time
+	    var data = Array(single_ch_issues.length +2) // +2 for max_erf_fit and rise_time
 	    var total_issues = 0
-
-	    for (let i = 0; i < doublet_channel_issues.length; i++) {
-		var the_issue = doublet_channel_issues[i];
-		var this_panel_doublets = Array(96).fill(0)
-		var this_panel_issue = this_panel_issues[the_issue];
-		for (let j = 0; j < this_panel_issue.length; j++) {
-		    this_panel_doublets[2*this_panel_issue[j]] = 1;
-		    this_panel_doublets[2*this_panel_issue[j]+1] = 1;
-		}
-		total_issues = total_issues + this_panel_issue.length
-		var this_data = {
-		    name : the_issue + "",
-		    type : 'histogram',
-		    histfunc : "sum",
-		    x: wire_numbers,
-		    y: this_panel_doublets,
-		    xbins : { start : -0.5, end : 96.5, size : 1}
-		};
-		data[i] = this_data
-	    }
 
 	    for (let i = 0; i < single_ch_issues.length; i++) {
 		var the_issue = single_ch_issues[i];
@@ -68,7 +47,7 @@ showPanelButton.addEventListener('click', async function () {
 		    y: this_panel_straws,
 		    xbins : { start : -0.5, end : 96.5, size : 1}
 		};
-		data[doublet_channel_issues.length + i] = this_data
+		data[i] = this_data
 	    }
 
 	    var max_erf_fits = this_panel_issues['max_erf_fit'];
@@ -137,12 +116,6 @@ showPanelButton.addEventListener('click', async function () {
 			output += "\t ";
 		    }
 		    the_issue = single_ch_issues[i];
-		}
-		else {
-		    if (i == single_ch_issues.length) {
-			output += "\n\t doublet-channel issues: ";
-		    }
-		    the_issue = doublet_channel_issues[i-single_ch_issues.length];
 		}
 		var this_panel_issue = this_panel_issues[the_issue];
 		output += this_panel_issue.length + " " + the_issue;
