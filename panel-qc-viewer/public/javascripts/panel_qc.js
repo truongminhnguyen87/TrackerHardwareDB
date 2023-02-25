@@ -1,7 +1,7 @@
 const form = document.querySelector("form");
 const log = document.querySelector("#log");
-const single_channel_issues = ["missing_straws", "high_current_wires", "blocked_straws", "short_wires", "sparking_wires", "missing_anode" ] // the rest to be added
-const doublet_channel_issues = ["missing_omega_pieces" ] //, "loose_omega_pieces"]
+const single_channel_issues = ["missing_straws", "high_current_wires", "blocked_straws", "short_wires", "sparking_wires", "missing_anode", "missing_omega_pieces" ] // the rest to be added
+const doublet_channel_issues = [ ] //"missing_omega_pieces" ] //, "loose_omega_pieces"]
 
 const showPanelButton = document.getElementById('btnShowPanel');
 showPanelButton.addEventListener('click', async function () {
@@ -132,7 +132,7 @@ showPanelButton.addEventListener('click', async function () {
 		var the_issue = "";
 		if (i < single_channel_issues.length) {
 		    if (i == 0) {
-			output += "\t single-channel issues: ";
+			output += "\t ";
 		    }
 		    the_issue = single_channel_issues[i];
 		}
@@ -148,7 +148,7 @@ showPanelButton.addEventListener('click', async function () {
 		if (i != data.length-1) { output += ", "; }
 	    }
 
-	    output += "\nMisc. Notes:";
+	    output += "\n\nNotes: ";
 	    output += this_panel_issues['notes'];
 	}
 	else {
