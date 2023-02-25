@@ -1,5 +1,6 @@
-const single_channel_issues = ["missing_straws", "high_current_wires", "blocked_straws", "short_wires", "sparking_wires", "missing_anode", "missing_cathode" ] // the rest to be added
-const doublet_channel_issues = ["missing_omega_pieces", "loose_omega_pieces"]
+import { single_channel_issues } from './single_channel_issues.js'
+const single_ch_issues = single_channel_issues();
+const doublet_channel_issues = [ ];
 
 //
 // All Panels Plot
@@ -7,7 +8,7 @@ const doublet_channel_issues = ["missing_omega_pieces", "loose_omega_pieces"]
 const response = await fetch('allPanels');
 const allPanelInfo = await response.json();
 //console.log(allPanelInfo);
-var single_channel_n_data = Array(single_channel_issues.length)
+var single_channel_n_data = Array(single_ch_issues.length)
 var panels = Array(allPanelInfo.length)
 var hv_exists = Array(allPanelInfo.length).fill(0)
 for (let i_panel = 0; i_panel < panels.length; i_panel++) {
@@ -16,9 +17,9 @@ for (let i_panel = 0; i_panel < panels.length; i_panel++) {
 	hv_exists[i_panel] = 1;
     }
 }
-for (let i_issue = 0; i_issue < single_channel_issues.length; ++i_issue) {
+for (let i_issue = 0; i_issue < single_ch_issues.length; ++i_issue) {
     var n_issue = Array(allPanelInfo.length);
-    var issue = single_channel_issues[i_issue];
+    var issue = single_ch_issues[i_issue];
 //    console.log(issue)
     for (let i_panel = 0; i_panel < panels.length; i_panel++) {
 	if (allPanelInfo[i_panel][issue] != null) {
