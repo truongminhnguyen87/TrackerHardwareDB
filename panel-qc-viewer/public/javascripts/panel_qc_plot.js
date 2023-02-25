@@ -108,9 +108,5 @@ export function plot_panel_qc(panel_info, straw_status_plot) {
 	
 	if (i != data.length-1) { output += ", "; }
     }
-
-    output += "\n\nNotes: ";
-    output += this_panel_issues['notes'];
-
     return output;
 }
