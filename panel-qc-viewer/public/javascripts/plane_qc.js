@@ -21,7 +21,7 @@ showPlaneButton.addEventListener('click', async function () {
 	    panels[i_panel] = i_panel+1;
 	}
 
-	output = "Plane "+plane_number;
+	output = "Plane "+plane_number+"\n";
 	for (let i_panel = 0; i_panel < 6; ++i_panel) {
 	    var panel_number = panels[i_panel]
 	    var this_title = "Panel "+panel_number.toString();
@@ -29,7 +29,7 @@ showPlaneButton.addEventListener('click', async function () {
 	    const response = await fetch('getPanel/'+panel_number);
 	    const panel_info = await response.json();
 
-	    output = "Panel "+panel_number;
+	    output += "Panel "+panel_number;
 	    if (panel_info.length==0) {
 		output += " not found!";
 	    }
