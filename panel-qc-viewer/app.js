@@ -26,8 +26,8 @@ app.use('/allPanels', require('./routes/allPanels'));
 app.use('/getPanel', require('./routes/getPanel'));
 app.use('/findPanels', require('./routes/findPanels'));
 
-app.use('/raw_hv_data', require('./routes/raw_hv_data'));
-app.use('/getHVData', require('./routes/getHVData'));
+app.use('/hv_data', require('./routes/hv_data'));
+app.use('/getRawHVData', require('./routes/getRawHVData'));
 
 app.use('/panel_qc', require('./routes/panel_qc'));
 app.use('/all_panel_qc', require('./routes/all_panel_qc'));
