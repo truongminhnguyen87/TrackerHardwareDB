@@ -11,6 +11,29 @@ h2 {
   color: #00B7FF;
 }
 
+.top-links {
+    overflow: hidden
+    border: none;
+    background-color: white;
+    display : block;
+    font-size: 17px;
+    padding: 6px 12px;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.top-links-item {
+    background-color: white;
+    float: left;
+    border: 1px solid #00B7FF;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+
 .tab {
     overflow: hidden;
     border: 1px solid #00B7FF;
