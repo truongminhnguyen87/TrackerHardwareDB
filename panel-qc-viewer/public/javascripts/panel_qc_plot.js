@@ -77,7 +77,8 @@ export function plot_panel_qc(panel_info, straw_status_plot) {
 		       overlaying: 'y',
 		       side: 'right',
 		       titlefont: {color: 'red'},
-		       tickfont: {color: 'red'}
+		       tickfont: {color: 'red'},
+		       showgrid : false
 		   },
 		   yaxis3: {
 		       title: 'Rise Time [min]',
@@ -85,7 +86,8 @@ export function plot_panel_qc(panel_info, straw_status_plot) {
 		       side: 'right',
 		       position : 0.95,
 		       titlefont: {color: 'blue'},
-		       tickfont: {color: 'blue'}
+		       tickfont: {color: 'blue'},
+		       showgrid : false
 		   },
 		   barmode : 'stack',
 		   legend: {"orientation": "h"},
