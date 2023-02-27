@@ -100,7 +100,7 @@ async function findPanels(uw_values, uw_ops, uw_issues, uw_andors) {
 	}
 	url += uw_ops[i_issue] + "/" + uw_values[i_issue].toString() + "/" + uw_issues[i_issue];
     }
-    console.log(url)
+//    console.log(url)
   const response = await fetch(url);
   const panelInfo = await response.json();
   return panelInfo;
