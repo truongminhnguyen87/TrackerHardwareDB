@@ -2,7 +2,7 @@ const last_import_response = await fetch('getImportDateOfFNALPlanesDB');
 const last_import_info = await last_import_response.json();
 var dates = last_import_info.map(a => a.last_modified);
 var max_date =  dates.reduce(function(a, b) { return a > b ? a : b;})
-document.getElementById("last_import").innerHTML = "Last imported on: "+max_date;
+document.getElementById("last_import").innerHTML = "Most recent information from: "+max_date;
 
 const showPanelButton = document.getElementById('btnShowPanel');
 showPanelButton.addEventListener('click', async function () {
@@ -26,6 +26,9 @@ showPanelButton.addEventListener('click', async function () {
 		dump_output += "\n";
 		dump_output += this_panel_dump["file_contents"] + "\n\n";
 	    }
+	}
+	else {
+	    dump_output += "Panel " + panel_number + " not found"
 	}
 	document.getElementById("dump").innerHTML = dump_output;
     }
