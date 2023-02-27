@@ -22,16 +22,20 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/allPanels', require('./routes/allPanels'));
-app.use('/getPanel', require('./routes/getPanel'));
-app.use('/findPanels', require('./routes/findPanels'));
+app.use('/allPanels', require('./db/allPanels'));
+app.use('/getPanel', require('./db/getPanel'));
+app.use('/findPanels', require('./db/findPanels'));
 
 app.use('/hv_data', require('./routes/hv_data'));
-app.use('/getRawHVData', require('./routes/getRawHVData'));
+app.use('/getRawHVData', require('./db/getRawHVData'));
 
 app.use('/panel_qc', require('./routes/panel_qc'));
 app.use('/all_panel_qc', require('./routes/all_panel_qc'));
 app.use('/plane_qc', require('./routes/plane_qc'));
+
+app.use('/getPanelFromFNALPlanesDB', require('./db/getPanelFromFNALPlanesDB'));
+app.use('/getImportDateOfFNALPlanesDB', require('./db/getImportDateOfFNALPlanesDB'));
+app.use('/fnal_plane_db', require('./routes/fnal_plane_db'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
