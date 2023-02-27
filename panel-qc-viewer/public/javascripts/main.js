@@ -1,7 +1,7 @@
 const form = document.querySelector("form");
 const log = document.querySelector("#log");
 const single_channel_issues = ["missing_straws", "high_current_wires", "blocked_straws", "short_wires", "sparking_wires", "missing_anode", "missing_cathode" ] // the rest to be added
-const pair_channel_issues = ["missing_omega_pieces", "loose_omega_pieces"]
+const doublet_channel_issues = ["missing_omega_pieces", "loose_omega_pieces"]
 
 //
 // All Panels Plot
@@ -11,8 +11,12 @@ const allPanelInfo = await response.json();
 //console.log(allPanelInfo);
 var single_channel_n_data = Array(single_channel_issues.length)
 var panels = Array(allPanelInfo.length)
+var hv_exists = Array(allPanelInfo.length).fill(0)
 for (let i_panel = 0; i_panel < panels.length; i_panel++) {
     panels[i_panel] = allPanelInfo[i_panel]['id'];
+    if (allPanelInfo[i_panel]['max_erf_fit'].length != 0) {
+	hv_exists[i_panel] = 1;
+    }
 }
 for (let i_issue = 0; i_issue < single_channel_issues.length; ++i_issue) {
     var n_issue = Array(allPanelInfo.length);
@@ -41,35 +45,54 @@ var layout = { title : {text: "All Single-Channel Issues vs Panel Number"},
 	       scroolZoom : true };
 Plotly.newPlot(single_channel_issue_vs_panel_plot, single_channel_n_data, layout);
 
-// var pair_channel_n_data = Array(pair_channel_issues.length)
+var hv_data_vs_panel_plot = document.getElementById('hv_data_vs_panel_plot');
+var hv_data_exists = {name : "hv_data_exists",
+		      x: panels,
+		      y: hv_exists,
+		      mode:"markers",
+		      type:"scatter"
+		     }
+var xaxis = {title : {text : 'panel number'}, tickmode : "linear", tick0 : 0.0, dtick : 10.0, gridwidth : 2};
+var yaxis = {title : {text : ''}, 
+	     tickmode: "array",
+	     tickvals: [0, 1],
+	     ticktext: ['no', 'yes']
+	    };
+var layout = { title : {text: "HV Data Exists?"},
+	       xaxis : xaxis,
+	       yaxis : yaxis,
+	       scroolZoom : true };
+Plotly.newPlot(hv_data_vs_panel_plot, [ hv_data_exists ], layout);
+
+// var doublet_channel_n_data = Array(doublet_channel_issues.length)
 // var panels = Array(allPanelInfo.length)
 // for (let i_panel = 0; i_panel < panels.length; i_panel++) {
 //     panels[i_panel] = allPanelInfo[i_panel]['id'];
 // }
-// for (let i_issue = 0; i_issue < pair_channel_issues.length; ++i_issue) {
+// for (let i_issue = 0; i_issue < doublet_channel_issues.length; ++i_issue) {
 //     var n_issue = Array(allPanelInfo.length);
-//     var issue = pair_channel_issues[i_issue];
+//     var issue = doublet_channel_issues[i_issue];
 //     for (let i_panel = 0; i_panel < panels.length; i_panel++) {
 // 	n_issue[i_panel] = allPanelInfo[i_panel][issue].length;
 // //	n_issue[i_panel] = 1;
 //     }
 
 //     // Define Data
-//     pair_channel_n_data[i_issue] = {name : issue,
+//     doublet_channel_n_data[i_issue] = {name : issue,
 // 					  x: panels,
 // 					  y: n_issue,
 // 					  mode:"markers",
 // 					  type:"scatter"
 // 					 }
 // }
-// var pair_channel_issue_vs_panel_plot = document.getElementById('pair_channel_issue_vs_panel_plot');
+// var doublet_channel_issue_vs_panel_plot = document.getElementById('doublet_channel_issue_vs_panel_plot');
 // var xaxis = {title : {text : 'panel number'}, tickmode : "linear", tick0 : 0.0, dtick : 10.0, gridwidth : 2};
-// var yaxis = {title : {text : 'no. of channels with pair-channel issues'}};
-// var layout = { title : {text: "All Pair-Channel Issues vs Panel Number"},
+// var yaxis = {title : {text : 'no. of channels with doublet-channel issues'}};
+// var layout = { title : {text: "All Doublet-Channel Issues vs Panel Number"},
 // 	       xaxis : xaxis,
 // 	       yaxis : yaxis,
 // 	       scroolZoom : true };
-// Plotly.newPlot(pair_channel_issue_vs_panel_plot, pair_channel_n_data, layout);
+// Plotly.newPlot(doublet_channel_issue_vs_panel_plot, doublet_channel_n_data, layout);
 //
 // Show issues with specific panel
 //
@@ -97,15 +120,15 @@ showPanelButton.addEventListener('click', async function () {
 		wire_numbers[i] = i;
 	    }
 
-	    var data = Array(single_channel_issues.length + pair_channel_issues.length + 1)
+	    var data = Array(single_channel_issues.length + doublet_channel_issues.length + 2) // +2 for max_erf_fit and rise_time
 	    var total_issues = 0
 
-	    for (let i = 0; i < pair_channel_issues.length; i++) {
-		var the_issue = pair_channel_issues[i];
-		var this_panel_pairs = Array(96).fill(0)
+	    for (let i = 0; i < doublet_channel_issues.length; i++) {
+		var the_issue = doublet_channel_issues[i];
+		var this_panel_doublets = Array(96).fill(0)
 		var this_panel_issue = this_panel_issues[the_issue];
 		for (let j = 0; j < this_panel_issue.length; j++) {
-		    this_panel_pairs[this_panel_issue[j]] = 1;
+		    this_panel_doublets[this_panel_issue[j]] = 1;
 		}
 //		total_issues = total_issues + this_panel_issue.length
 		var this_data = {
@@ -113,7 +136,7 @@ showPanelButton.addEventListener('click', async function () {
 		    type : 'histogram',
 		    histfunc : "sum",
 		    x: wire_numbers,
-		    y: this_panel_pairs,
+		    y: this_panel_doublets,
 		    xbins : { start : -0.5, end : 96.5, size : 1}
 		};
 		data[i] = this_data
@@ -135,26 +158,42 @@ showPanelButton.addEventListener('click', async function () {
 		    y: this_panel_straws,
 		    xbins : { start : 0, end : 96, size : 1}
 		};
-		data[pair_channel_issues.length + i] = this_data
+		data[doublet_channel_issues.length + i] = this_data
 	    }
 
 	    var max_erf_fits = this_panel_issues['max_erf_fit'];
-	    var pair_numbers = Array(48).fill(0)
-	    for (let i = 0; i < pair_numbers.length; i++) {
-		pair_numbers[i] = (2*i+0.5);
+	    var doublet_numbers = Array(48).fill(0)
+	    for (let i = 0; i < doublet_numbers.length; i++) {
+		doublet_numbers[i] = (2*i+0.5);
 	    }
 	    var max_erf_fit_data = {
 		    name : 'max_erf_fit',
 		    type : 'scatter',
-		    x: pair_numbers,
+		    x: doublet_numbers,
 		    y: max_erf_fits,
 		yaxis : 'y2',
-		mode : 'lines+markers'
+		mode : 'lines+markers',
+		marker : { color : 'red' },
+		line : { color : 'red' }
 	    };	    
-	    data[data.length-1] = max_erf_fit_data;
+	    data[data.length-2] = max_erf_fit_data;
+
+//	    var rise_times = this_panel_issues['rise_time'];
+	    var rise_times = Array(48).fill(10);
+	    var rise_time_data = {
+		    name : 'rise_time',
+		    type : 'scatter',
+		    x: doublet_numbers,
+		    y: rise_times,
+		yaxis : 'y3',
+		mode : 'lines+markers',
+		marker : { color : 'blue' },
+		line : { color : 'blue' }
+	    };	    
+	    data[data.length-1] = rise_time_data;
 	    
 	    straw_status_plot = document.getElementById('straw_status_plot');
-	    var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2, range : [0, 96]};
+	    var xaxis = {title : {text : 'straw number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2, range : [0, 96], domain : [0, 0.9]};
 	    var yaxis = {title : {text : 'no. of issues'}};
 	    var layout = { title : {text: this_title + " Straw/Wire Status"},
 			   xaxis : xaxis,
@@ -162,7 +201,17 @@ showPanelButton.addEventListener('click', async function () {
 			   yaxis2: {
 			       title: 'Max Erf Fit [nA]',
 			       overlaying: 'y',
-			       side: 'right'
+			       side: 'right',
+			       titlefont: {color: 'red'},
+			       tickfont: {color: 'red'}
+			   },
+			   yaxis3: {
+			       title: 'Rise Time [min]',
+			       overlaying: 'y',
+			       side: 'right',
+			       position : 0.95,
+			       titlefont: {color: 'blue'},
+			       tickfont: {color: 'blue'}
 			   },
 			   barmode : 'stack',
 			   legend: {"orientation": "h"},
@@ -171,7 +220,7 @@ showPanelButton.addEventListener('click', async function () {
 	    Plotly.newPlot(straw_status_plot, data, layout);	    
 	    // total = missing_straws.length + high_current_wires.length + blocked_straws.length + sparking_wires.length;
 	    output += " has "+total_issues+" bad channels: \n"
-	    for (let i = 0; i < data.length-1; i++) {
+	    for (let i = 0; i < data.length-2; i++) {
 		var the_issue = "";
 		if (i < single_channel_issues.length) {
 		    if (i == 0) {
@@ -181,9 +230,9 @@ showPanelButton.addEventListener('click', async function () {
 		}
 		else {
 		    if (i == single_channel_issues.length) {
-			output += "\n\t pair-channel issues: ";
+			output += "\n\t doublet-channel issues: ";
 		    }
-		    the_issue = pair_channel_issues[i-single_channel_issues.length];
+		    the_issue = doublet_channel_issues[i-single_channel_issues.length];
 		}
 		var this_panel_issue = this_panel_issues[the_issue];
 		output += this_panel_issue.length + " " + the_issue;

@@ -14,7 +14,6 @@ router
 			      else { return h; }
 			  }
 			 };
-      console.log(papa.parse(hvData, parse_config).data);
     return res.send(papa.parse(hvData, parse_config).data);
 })
 

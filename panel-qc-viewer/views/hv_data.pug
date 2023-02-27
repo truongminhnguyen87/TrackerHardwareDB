@@ -3,16 +3,25 @@ extends layout
 block content
   .container
     br
-    h1.text-primary= title
     h2 Panel HV Data
+    h3 Analyzed Data
     .row
        .col-5
-         | Show HV data for panel number: 
-         input#panel_number(type='number')
+         | Show analyzed HV data for panel number: 
+         input#panel_number_ana(type='number')
        .col-2
-         button#btnShowHVData.btn.btn-block.btn-info Show HV Data
+         button#btnShowAnaHVData.btn.btn-block.btn-info Show Analyzed HV Data
     .row
-         div#hv_data_plot(style="width:1300px;height:1300px;")
+         //div#hv_data_plot(style="width:1300px;height:1300px;")
+    h3 Raw Data
+    .row
+       .col-5
+         | Show raw HV data for panel number (warning may take a while): 
+         input#panel_number_raw(type='number')
+       .col-2
+         button#btnShowRawHVData.btn.btn-block.btn-info Show Raw HV Data
+    .row
+         div#raw_hv_data_plot(style="width:1300px;height:1300px;")
     h2 Verbose Output
     .row
         pre#log.

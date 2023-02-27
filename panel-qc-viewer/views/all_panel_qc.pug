@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .container
+    br
+    h2 Panel QC Summary
+    .row
+       div#single_channel_issue_vs_panel_plot(style="width:1300px;height:400px;")
+       div#hv_data_vs_panel_plot(style="width:1300px;height:400px;")
+    //h2 Verbose Output
+    //.row
+        //pre#log.
+
+
+  script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', integrity='sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4', crossorigin='anonymous')
+  script(src='https://cdn.plot.ly/plotly-2.16.1.min.js')
+  script(src='javascripts/all_panel_qc.js', type='module', crossorigin='anonymous')
+  
