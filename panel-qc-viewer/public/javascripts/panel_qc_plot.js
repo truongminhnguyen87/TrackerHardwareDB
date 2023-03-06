@@ -52,8 +52,7 @@ export function plot_panel_qc(panel_info, straw_status_plot) {
     };	    
     data[data.length-2] = max_erf_fit_data;
 
-    //	    var rise_times = this_panel_issues['rise_time'];
-    var rise_times = Array(48).fill(10);
+    var rise_times = this_panel_issues['rise_time'];
     var rise_time_data = {
 	name : 'rise_time',
 	type : 'scatter',
@@ -109,6 +108,9 @@ export function plot_panel_qc(panel_info, straw_status_plot) {
 	output += this_panel_issue.length + " " + the_issue;
 	
 	if (i != data.length-1) { output += ", "; }
+    }
+    if (rise_times.length == 0 || max_erf_fits.length ==0) {
+	output += "\nNo HV data";
     }
     return output;
 }
