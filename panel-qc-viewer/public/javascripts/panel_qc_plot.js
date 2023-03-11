@@ -110,7 +110,10 @@ export function plot_panel_qc(panel_info, straw_status_plot) {
 	if (i != data.length-1) { output += ", "; }
     }
     if (rise_times.length == 0 || max_erf_fits.length ==0) {
-	output += "\nNo HV data";
+	output += "\n\tHV data? No";
+    }
+    else {
+	output += "\n\tHV data? Yes";
     }
     return output;
 }
