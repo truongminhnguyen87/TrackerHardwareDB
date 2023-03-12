@@ -109,11 +109,19 @@ export function plot_panel_qc(panel_info, straw_status_plot) {
 	
 	if (i != data.length-1) { output += ", "; }
     }
-    if (rise_times.length == 0 || max_erf_fits.length ==0) {
-	output += "\n\tHV data? No";
+
+    output += "\n\t HV data: ";
+    var hv_data_filenames = this_panel_issues["hv_data_filenames"];
+    if (hv_data_filenames.length == 0) {
+	output += "none";
     }
     else {
-	output += "\n\tHV data? Yes";
+	for (let i_filename = 0; i_filename < hv_data_filenames.length; ++i_filename) {
+	    output += hv_data_filenames[i_filename];
+	    if (i_filename < hv_data_filenames.length-1) {
+		output += ", ";
+	    }
+	}
     }
     return output;
 }
