@@ -12,7 +12,29 @@ block content
        .col-2
          button#btnShowAnaHVData.btn.btn-block.btn-info Show Analyzed HV Data
     .row
-         //div#hv_data_plot(style="width:1300px;height:1300px;")
+       .col-6
+         | Raw Data
+         pre#raw_filename
+       .col-6
+         | Smoothed Data
+         pre#smooth_filename
+    .row
+       .col-6
+         img#img_rawdata(style="width:650px;")
+       .col-6
+         img#img_smoothdata(style="width:650px;")
+    .row
+       .col-6
+         | Max Erf Fit
+         pre#maxerf_filename
+       .col-6
+         | Delta Time
+         pre#deltatime_filename
+    .row
+       .col-6
+         img#img_maxerf(style="width:650px;")
+       .col-6
+         img#img_deltatime(style="width:650px;")
     h3 Raw Data
     .row
        .col-5

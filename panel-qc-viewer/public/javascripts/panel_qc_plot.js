@@ -52,8 +52,7 @@ export function plot_panel_qc(panel_info, straw_status_plot) {
     };	    
     data[data.length-2] = max_erf_fit_data;
 
-    //	    var rise_times = this_panel_issues['rise_time'];
-    var rise_times = Array(48).fill(10);
+    var rise_times = this_panel_issues['rise_time'];
     var rise_time_data = {
 	name : 'rise_time',
 	type : 'scatter',
@@ -109,6 +108,20 @@ export function plot_panel_qc(panel_info, straw_status_plot) {
 	output += this_panel_issue.length + " " + the_issue;
 	
 	if (i != data.length-1) { output += ", "; }
+    }
+
+    output += "\n\t HV data: ";
+    var hv_data_filenames = this_panel_issues["hv_data_filenames"];
+    if (hv_data_filenames.length == 0) {
+	output += "none";
+    }
+    else {
+	for (let i_filename = 0; i_filename < hv_data_filenames.length; ++i_filename) {
+	    output += hv_data_filenames[i_filename];
+	    if (i_filename < hv_data_filenames.length-1) {
+		output += ", ";
+	    }
+	}
     }
     return output;
 }

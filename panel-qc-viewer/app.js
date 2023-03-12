@@ -24,13 +24,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/allPanels', require('./db/allPanels'));
 app.use('/getPanel', require('./db/getPanel'));
+
 app.use('/findPanels', require('./db/findPanels'));
+app.use('/find_panel', require('./routes/find_panel'));
 
 app.use('/hv_data', require('./routes/hv_data'));
 app.use('/getRawHVData', require('./db/getRawHVData'));
 
 app.use('/panel_qc', require('./routes/panel_qc'));
 app.use('/all_panel_qc', require('./routes/all_panel_qc'));
+
+app.use('/getPlane', require('./db/getPlane'));
 app.use('/plane_qc', require('./routes/plane_qc'));
 
 app.use('/getPanelFromFNALPlanesDB', require('./db/getPanelFromFNALPlanesDB'));

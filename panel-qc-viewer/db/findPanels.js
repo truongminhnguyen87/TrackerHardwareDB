@@ -26,7 +26,7 @@ router
 	      url += '&w=cardinality('+req.params.uw_issue3+'):'+req.params.uw_op3+":"+req.params.uw_value3;
 	  }
       }
-      console.log(url)
+//      console.log(url)
       const response = await fetch(url+'&o=id&f=text');
       const panelInfo = await response.text();
       return res.send(panelInfo);
