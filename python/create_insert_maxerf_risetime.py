@@ -25,7 +25,6 @@ def find_datafiles(panel_name):
         for datafile in datafiles:
             if (datafile.is_file()):
                 if (panel_name in datafile.name):
-                    print(datafile.name)
                     panel_datafiles.append(datafile)
 
     # Now we go through and get the specific files we want in this order
@@ -39,7 +38,7 @@ def find_datafiles(panel_name):
     backup_panel_datafiles=[] # these are files we want to keep in back up in case we need them
     highest_ch0_run=0
     highest_ch1_run=0
-    for i_run in range(5,0,-1):
+    for i_run in range(10,0,-1):
         for datafile in panel_datafiles:
             fields=datafile.name.split('_');
             run=""
@@ -130,4 +129,8 @@ if (len(df.index) != expected_rows):
 insert_sql_file = open(outfilename, 'w')
 insert_sql_file.write("UPDATE qc.panels SET max_erf_fit=\'{" + df.sort_values('ch')['max_erf_fit'].to_string(index=False).replace("\n", ",") + "}\' where id=" + str(panel_id) + ";\n");
 insert_sql_file.write("UPDATE qc.panels SET rise_time=\'{" + df.sort_values('ch')['rise_time'].to_string(index=False).replace("\n", ",") + "}\' where id=" + str(panel_id) + ";\n");
+insert_sql_file.write("UPDATE qc.panels SET hv_data_filenames=\'{"
+                      + ' '.join([datafile.name+"," for datafile in panel_datafiles[:-1]]) # all but the last filenames should be comma-separated
+                      + ' '.join([datafile.name for datafile in panel_datafiles[-1:]])
+                      + "}\' where id=" + str(panel_id) + ";\n");
 print("Done!");
