@@ -10,9 +10,11 @@ const allPanelInfo = await response.json();
 //console.log(allPanelInfo);
 var single_channel_n_data = Array(single_ch_issues.length)
 var panels = Array(allPanelInfo.length)
+var panel_num_map = new Map();
 var hv_exists = Array(allPanelInfo.length).fill(0)
 for (let i_panel = 0; i_panel < panels.length; i_panel++) {
     panels[i_panel] = allPanelInfo[i_panel]['id'];
+    panel_num_map.set(allPanelInfo[i_panel]['id'], i_panel);
     if (allPanelInfo[i_panel]['max_erf_fit'].length != 0) {
 	hv_exists[i_panel] = 1;
     }
@@ -75,10 +77,9 @@ for (let i_plane = 0; i_plane < planes.length; i_plane++) {
     let panels = allPlaneInfo[i_plane]['panels']
     for (let i_panel = 0; i_panel < panels.length; ++i_panel){
 	let panel_number = panels[i_panel];
-	const panel_response = await fetch('getPanel/'+panel_number);
-	const panel_info = await panel_response.json();
+	const panel_info = allPanelInfo[panel_num_map.get(panel_number)];
 
-	if (panel_info[0]['max_erf_fit'].length != 0) {
+	if (panel_info['max_erf_fit'].length != 0) {
 	    hv_exists_plane[i_plane] += 1;
 	}
     }
