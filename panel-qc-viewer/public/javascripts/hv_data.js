@@ -21,6 +21,9 @@ showAnaHVDataButton.addEventListener('click', async function () {
 		img_smoothdata.src =  "images/hv_data/mn" + panel_number.toString().padStart(3,'0') + "_r" + i_smooth_run.toString() + "_smooth.png";
 		--i_smooth_run;
 	    }
+	    else {
+		img_smoothdata.src = "images/hv_data/notfound.png";
+	    }
 	}
 	img_smoothdata.onerror = smooth_data;
 	img_smoothdata.onload = function() { document.getElementById("smooth_filename").innerHTML = img_smoothdata.src; }
@@ -36,6 +39,9 @@ showAnaHVDataButton.addEventListener('click', async function () {
 	    else if (i_raw_run > min_run_to_try) {
 		img_rawdata.src =  "images/hv_data/mn" + panel_number.toString().padStart(3,'0') + "_r" + i_raw_run.toString() + ".png";
 		--i_raw_run;
+	    }
+	    else {
+		img_rawdata.src = "images/hv_data/notfound.png";
 	    }
 	}
 	img_rawdata.onerror = raw_data;
@@ -53,6 +59,9 @@ showAnaHVDataButton.addEventListener('click', async function () {
 		img_maxerf.src =  "images/hv_data/mn" + panel_number.toString().padStart(3,'0') + "_maxerf_r" + i_maxerf_run.toString() + ".png";
 		--i_maxerf_run;
 	    }
+	    else {
+		img_maxerf.src = "images/hv_data/notfound.png";
+	    }
 	}
 	img_maxerf.onerror = maxerf_data;
 	img_maxerf.onload = function() { document.getElementById("maxerf_filename").innerHTML = img_maxerf.src; }
@@ -68,6 +77,9 @@ showAnaHVDataButton.addEventListener('click', async function () {
 	    else if (i_deltatime_run > min_run_to_try) {
 		img_deltatime.src =  "images/hv_data/mn" + panel_number.toString().padStart(3,'0') + "_deltatime_r" + i_deltatime_run.toString() + ".png";
 		--i_deltatime_run;
+	    }
+	    else {
+		img_deltatime.src = "images/hv_data/notfound.png";
 	    }
 	}
 	img_deltatime.onerror = deltatime_data;
