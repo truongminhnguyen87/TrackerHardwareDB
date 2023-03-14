@@ -34,6 +34,7 @@ app.use('/getRawHVData', require('./db/getRawHVData'));
 app.use('/panel_qc', require('./routes/panel_qc'));
 app.use('/all_panel_qc', require('./routes/all_panel_qc'));
 
+app.use('/allPlanes', require('./db/allPlanes'));
 app.use('/getPlane', require('./db/getPlane'));
 app.use('/plane_qc', require('./routes/plane_qc'));
 

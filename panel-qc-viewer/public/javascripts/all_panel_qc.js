@@ -62,3 +62,38 @@ var layout = { title : {text: "HV Data Exists?"},
 	       yaxis : yaxis,
 	       scroolZoom : true };
 Plotly.newPlot(hv_data_vs_panel_plot, [ hv_data_exists ], layout);
+
+
+const plane_response = await fetch('allPlanes');
+const allPlaneInfo = await plane_response.json();
+
+var planes = Array(allPlaneInfo.length)
+var hv_exists_plane = Array(allPlaneInfo.length).fill(0)
+
+for (let i_plane = 0; i_plane < planes.length; i_plane++) {
+    planes[i_plane] = allPlaneInfo[i_plane]['plane'];
+    let panels = allPlaneInfo[i_plane]['panels']
+    for (let i_panel = 0; i_panel < panels.length; ++i_panel){
+	let panel_number = panels[i_panel];
+	const panel_response = await fetch('getPanel/'+panel_number);
+	const panel_info = await panel_response.json();
+
+	if (panel_info[0]['max_erf_fit'].length != 0) {
+	    hv_exists_plane[i_plane] += 1;
+	}
+    }
+}
+var hv_data_vs_plane_plot = document.getElementById('hv_data_vs_plane_plot');
+var hv_data_exists_plane = {name : "hv_data_exists",
+		      x: planes,
+		      y: hv_exists_plane,
+		      mode:"markers",
+		      type:"scatter"
+		     }
+var xaxis = {title : {text : 'plane number'}, tickmode : "linear", tick0 : 0.0, dtick : 1.0, gridwidth : 2};
+var yaxis = {title : {text : 'no. of panels with HV data'}, tick0 : 0.0, dtick : 1, range : [0, 6] };
+var layout = { title : {text: "HV Data per Plane"},
+	       xaxis : xaxis,
+	       yaxis : yaxis,
+	       scroolZoom : true };
+Plotly.newPlot(hv_data_vs_plane_plot, [ hv_data_exists_plane ], layout);
