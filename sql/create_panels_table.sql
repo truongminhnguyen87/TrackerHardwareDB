@@ -19,7 +19,7 @@ create table qc.panels (
 	missing_cathode integer[] DEFAULT '{}',
 	rise_time real[] DEFAULT '{}',
 	missing_wires integer[] DEFAULT '{}',
-	hv_data_filenames text[] DEFAULT '{}',
+	maxerf_risetime_filenames text[] DEFAULT '{}',
 );
 
 grant select on qc.panels to public;

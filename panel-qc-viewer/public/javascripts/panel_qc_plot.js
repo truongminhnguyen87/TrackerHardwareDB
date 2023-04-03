@@ -111,14 +111,14 @@ export function plot_panel_qc(panel_info, straw_status_plot) {
     }
 
     output += "\n\t HV data: ";
-    var hv_data_filenames = this_panel_issues["hv_data_filenames"];
-    if (hv_data_filenames.length == 0) {
+    var maxerf_risetime_filenames = this_panel_issues["maxerf_risetime_filenames"];
+    if (maxerf_risetime_filenames.length == 0) {
 	output += "none";
     }
     else {
-	for (let i_filename = 0; i_filename < hv_data_filenames.length; ++i_filename) {
-	    output += hv_data_filenames[i_filename];
-	    if (i_filename < hv_data_filenames.length-1) {
+	for (let i_filename = 0; i_filename < maxerf_risetime_filenames.length; ++i_filename) {
+	    output += maxerf_risetime_filenames[i_filename];
+	    if (i_filename < maxerf_risetime_filenames.length-1) {
 		output += ", ";
 	    }
 	}
