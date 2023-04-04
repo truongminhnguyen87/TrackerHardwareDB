@@ -96,18 +96,24 @@ export function plot_panel_qc(panel_info, straw_status_plot) {
 
     // total = missing_straws.length + high_current_wires.length + blocked_straws.length + sparking_wires.length;
     var output = " has "+total_issues+" issues: \n"
+    var first = true;
     for (let i = 0; i < data.length-2; i++) {
 	var the_issue = "";
 	if (i < single_ch_issues.length) {
-	    if (i == 0) {
-	    	output += "\t ";
-	    }
 	    the_issue = single_ch_issues[i];
 	}
 	var this_panel_issue = this_panel_issues[the_issue];
-	output += this_panel_issue.length + " " + the_issue;
-	
-	if (i != data.length-1) { output += ", "; }
+	if (this_panel_issue.length > 0) {
+	    if (first == true) {
+	    	output += "\t ";
+		first = false;
+	    }
+	    else {
+		output += ", ";
+	    }
+	    output += this_panel_issue.length + " " + the_issue;
+	}
+//	if (i != data.length-1) { output += ", "; }
     }
 
     output += "\n\t HV data: ";
